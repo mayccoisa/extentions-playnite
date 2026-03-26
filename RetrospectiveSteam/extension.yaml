@@ -1,0 +1,8 @@
+Id: 785d9324-4173-420d-b17a-e2ace45bb317
+Name: Retrospectiva anual
+Author: WEON-ADMIN
+Description: "Plugin de Retrospectiva Anual no estilo Steam Replay. Analise suas estatísticas em gráficos por biblioteca e gênero, veja seus jogos favoritos e explore sua jornada ao longo do ano em uma surpreendente timeline em Zigzag."
+Version: 0.2
+Module: RetrospectiveSteam.dll
+Type: GenericPlugin
+Icon: icon.png
