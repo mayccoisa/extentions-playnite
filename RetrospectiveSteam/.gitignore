@@ -1,0 +1,24 @@
+# Visual Studio / .NET
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.pdb
+*.cache
+*.opendb
+
+# Playnite specific
+*.pext
+extension.yaml.bak
+backup/
+
+# Common
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.log
+*.tmp
+
