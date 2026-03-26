@@ -221,7 +221,8 @@ namespace RetrospectiveSteam.ViewModels
                     {
                         Game = g.Game,
                         RankText = (i + 1).ToString(),
-                        PlaytimeFormatted = FormatPlaytime(g.Game.TotalPlaytimeSeconds)
+                        PlaytimeFormatted = FormatPlaytime(g.Game.TotalPlaytimeSeconds),
+                        IsCompleted = g.IsCompleted
                     });
                 }
 
@@ -363,12 +364,19 @@ namespace RetrospectiveSteam.ViewModels
                     {
                         bool isFirstTime = x.Game.FirstPlayed.HasValue && x.Game.FirstPlayed.Value.Year == SelectedYear;
                         
+                        bool shouldShowCompletedIcon = x.IsCompleted && 
+                                                    x.Game.CompletionDate.HasValue && 
+                                                    x.Game.CompletionDate.Value.Year == SelectedYear && 
+                                                    x.Game.CompletionDate.Value.Month == monthNum;
+                        
                         timelineMonth.Games.Add(new TimelineGameViewModel { 
                             GameId = x.GameId, 
                             CoverImagePath = x.CoverImagePath, 
                             PlaytimeFormatted = FormatPlaytime(_cachedSessions[x.GameId].Where(s => s.Date.Month == monthNum).Sum(s => s.Seconds)),
                             ToolTipText = x.Name,
-                            IsFirstTime = isFirstTime
+                            IsFirstTime = isFirstTime,
+                            IsCompleted = x.IsCompleted,
+                            ShouldShowCompletedIcon = shouldShowCompletedIcon
                         });
                     }
 
@@ -541,6 +549,7 @@ namespace RetrospectiveSteam.ViewModels
         public string RankText { get; set; }
         public Guid GameId { get { return Game.GameId; } }
         public List<string> Genres { get { return Game.Genres; } }
+        public bool IsCompleted { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
@@ -591,6 +600,8 @@ namespace RetrospectiveSteam.ViewModels
         public Guid GameId { get; set; }
         public string CoverImagePath { get; set; }
         public bool IsFirstTime { get; set; }
+        public bool IsCompleted { get; set; }
+        public bool ShouldShowCompletedIcon { get; set; }
         public string PlaytimeFormatted { get; set; }
         public string ToolTipText { get; set; }
     }

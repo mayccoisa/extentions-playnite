@@ -245,8 +245,7 @@ namespace RetrospectiveSteam.Services
 
         private string GetSuccessStoryPath(Guid gameId)
         {
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var extData = Path.Combine(appData, "Playnite", "ExtensionsData");
+            var extData = playniteApi.Paths.ExtensionsDataPath;
             if (!Directory.Exists(extData)) return null;
 
             foreach (var dir in Directory.GetDirectories(extData))
@@ -706,7 +705,58 @@ namespace RetrospectiveSteam.Services
             data.CoverImagePath = coverPath;
             data.BackgroundImagePath = g.BackgroundImage != null ? playniteApi.Database.GetFullFilePath(g.BackgroundImage) : null;
             data.ReleaseYear = releaseYear;
+            data.IsCompleted = g.CompletionStatus != null && (g.CompletionStatus.Name == "Completed" || g.CompletionStatus.Name == "Concluído");
 
+            // Smart Completion Date Detection
+            if (data.IsCompleted)
+            {
+                // 1. Try native CompletionDate (via dynamic for SDK compatibility)
+                try
+                {
+                    dynamic dynGame = g;
+                    DateTime? nativeCompDate = dynGame.CompletionDate;
+                    if (nativeCompDate.HasValue)
+                    {
+                        data.CompletionDate = nativeCompDate.Value;
+                    }
+                }
+                catch { }
+
+                // 2. Fallback to SuccessStory (last achievement date)
+                if (!data.CompletionDate.HasValue)
+                {
+                    var ssPathFallback = GetSuccessStoryPath(g.Id);
+                    if (ssPathFallback != null && File.Exists(ssPathFallback))
+                    {
+                        try
+                        {
+                            var ssJson = File.ReadAllText(ssPathFallback);
+                            var ssData = JsonConvert.DeserializeObject<SuccessStoryRoot>(ssJson);
+                            if (ssData != null && ssData.Items != null)
+                            {
+                                var lastAchievement = ssData.Items
+                                    .Where(i => i.DateUnlocked.HasValue)
+                                    .OrderByDescending(i => i.DateUnlocked.Value)
+                                    .FirstOrDefault();
+                                
+                                if (lastAchievement != null)
+                                {
+                                    data.CompletionDate = lastAchievement.DateUnlocked;
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
+                // 3. Last fallback: LastActivity
+                if (!data.CompletionDate.HasValue)
+                {
+                    data.CompletionDate = g.LastActivity;
+                }
+            }
+
+            // Achievements details again for data.UnlockedAchievements (keep existing logic)
             // Achievements
             var ssPath = GetSuccessStoryPath(g.Id);
             if (ssPath != null && File.Exists(ssPath))
@@ -832,6 +882,8 @@ namespace RetrospectiveSteam.Services
         public int          TotalAchievements    { get; set; }
         public int          UnlockedAchievements { get; set; }
         public int?         ReleaseYear          { get; set; }
+        public bool         IsCompleted          { get; set; }
+        public DateTime?    CompletionDate       { get; set; }
     }
 
     public class PlatformData

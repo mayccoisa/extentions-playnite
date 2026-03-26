@@ -1,14 +1,13 @@
 # Build and Deploy script for Retrospective Steam 2025
 # 
 # This script builds the extension and copies it to the Playnite extensions folder.
-# Adjust $playniteExtensions if your Playnite is installed elsewhere.
 
-$playniteExtensions = "$env:AppData\Playnite\Extensions\785d9324-4173-420d-b17a-e2ace45bb317"
-$msbuildPath = "C:\Program Files\Microsoft Visual Studio\18\Insiders\MSBuild\Current\Bin\MSBuild.exe"
-$projectPath = "c:\Users\WEON-ADMIN\Downloads\extensao playnite\RetrospectiveSteam\RetrospectiveSteam\RetrospectiveSteam.csproj"
-$outputPath = "c:\Users\WEON-ADMIN\Downloads\extensao playnite\RetrospectiveSteam\RetrospectiveSteam\bin\Debug"
+$playniteExtensions = "C:\Users\mayco\Downloads\Playnite\Extensions\785d9324-4173-420d-b17a-e2ace45bb317"
+$msbuildPath = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe"
+$projectPath = ".\RetrospectiveSteam.csproj"
+$outputPath = ".\bin\Debug"
 
-Write-Host "Building project..." -ForegroundColor Cyan
+Write-Host "Building project at $projectPath..." -ForegroundColor Cyan
 & $msbuildPath $projectPath /t:Rebuild /p:Configuration=Debug
 
 if ($LASTEXITCODE -ne 0) {
@@ -16,14 +15,22 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
-Write-Host "Deployment..." -ForegroundColor Cyan
+Write-Host "Deployment to $playniteExtensions..." -ForegroundColor Cyan
 if (!(Test-Path $playniteExtensions)) {
     New-Item -ItemType Directory -Force -Path $playniteExtensions | Out-Null
 }
 
+# Copy binary
 Copy-Item "$outputPath\RetrospectiveSteam.dll" $playniteExtensions -Force
-Copy-Item "c:\Users\WEON-ADMIN\Downloads\extensao playnite\RetrospectiveSteam\RetrospectiveSteam\bau_header.png" $playniteExtensions -Force
-Copy-Item "c:\Users\WEON-ADMIN\Downloads\extensao playnite\RetrospectiveSteam\RetrospectiveSteam\extension.yaml" $playniteExtensions -Force
-Copy-Item "c:\Users\WEON-ADMIN\Downloads\extensao playnite\RetrospectiveSteam\RetrospectiveSteam\icon.png" $playniteExtensions -Force
+
+# Copy assets
+Copy-Item ".\bau_header.png" $playniteExtensions -Force
+Copy-Item ".\extension.yaml" $playniteExtensions -Force
+Copy-Item ".\icon.png" $playniteExtensions -Force
+
+# Copy Localization folder
+if (Test-Path ".\Localization") {
+    Copy-Item ".\Localization" $playniteExtensions -Recurse -Force
+}
 
 Write-Host "Done! Please restart Playnite to see the changes." -ForegroundColor Green

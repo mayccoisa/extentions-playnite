@@ -32,11 +32,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Playnite.SDK">
-      <HintPath>C:\Users\WEON-ADMIN\AppData\Local\Playnite\Playnite.SDK.dll</HintPath>
+      <HintPath>C:\Users\mayco\Downloads\Playnite\Playnite.SDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Users\WEON-ADMIN\AppData\Local\Playnite\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\Users\mayco\Downloads\Playnite\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />

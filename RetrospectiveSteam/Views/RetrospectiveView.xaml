@@ -9,7 +9,7 @@
              x:Name="RootView">
 
     <UserControl.Resources>
-        <!-- Paleta de Cores Básica -->
+        <!-- Paleta de Cores BÃ¡sica -->
         <SolidColorBrush x:Key="FundoPrimario"   Color="#0e141b"/>
         <SolidColorBrush x:Key="FundoCard"       Color="#1b2838"/>
         <SolidColorBrush x:Key="AcentoMagenta"   Color="#df206c"/>
@@ -24,7 +24,7 @@
             <GradientStop Color="#0984e3" Offset="1"/>
         </LinearGradientBrush>
 
-        <!-- Tipografia (Referência de Fontes) -->
+        <!-- Tipografia (ReferÃªncia de Fontes) -->
         <FontFamily x:Key="FontePrimaria">Segoe UI</FontFamily>
         <FontFamily x:Key="FonteTitulos">Segoe UI</FontFamily>
         <FontFamily x:Key="FonteNumeros">Segoe UI</FontFamily>
@@ -110,6 +110,15 @@
                 </Border.Effect>
                 <Grid>
                     <Image Source="{Binding CoverImagePath}" Stretch="UniformToFill" />
+
+                    <!-- Completed Icon -->
+                    <Border VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4"
+                            Background="#4CAF50" Width="22" Height="22" CornerRadius="11"
+                            Visibility="{Binding IsCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" Foreground="White" 
+                                   FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    
                     <Border Background="{StaticResource AcentoMagenta}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                             Margin="0,0,-8,-12" Padding="6,2" CornerRadius="4">
                         <TextBlock Text="{Binding RankText}" Foreground="White" FontSize="14" FontWeight="Black"/>
@@ -125,14 +134,14 @@
 
         <StackPanel Margin="180,20,180,40">
 
-            <!-- ══════════════════════════════════════════════════════ -->
-            <!-- SECTION 1 — HEADER DINÂMICO (CÁPSULA)                 -->
-            <!-- ══════════════════════════════════════════════════════ -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <!-- SECTION 1 â€” HEADER DINÃ‚MICO (CÃPSULA)                 -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
             <Grid Margin="0,0,0,24">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/> <!-- Perfil / Controles -->
-                    <RowDefinition Height="Auto"/> <!-- Título Central -->
-                    <RowDefinition Height="380"/>  <!-- Cápsula do Tempo -->
+                    <RowDefinition Height="Auto"/> <!-- TÃ­tulo Central -->
+                    <RowDefinition Height="380"/>  <!-- CÃ¡psula do Tempo -->
                 </Grid.RowDefinitions>
 
                 <!-- Row 0: Perfil e Seletor -->
@@ -146,7 +155,7 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Width="45" Height="45" CornerRadius="22.5" Background="{StaticResource AcentoMagenta}" Margin="0,0,12,0"/>
                         <StackPanel>
-                            <TextBlock Text="Olá," Foreground="{StaticResource TextoSecundario}" FontSize="12"/>
+                            <TextBlock Text="OlÃ¡," Foreground="{StaticResource TextoSecundario}" FontSize="12"/>
                             <TextBlock Text="{Binding Username}" Foreground="White" FontSize="18" FontWeight="Black"/>
                         </StackPanel>
                     </StackPanel>
@@ -160,19 +169,19 @@
                     </StackPanel>
                 </Grid>
 
-                <!-- Row 1: Título Principal -->
+                <!-- Row 1: TÃ­tulo Principal -->
                 <TextBlock Grid.Row="1" HorizontalAlignment="Center" Margin="0,20,0,0">
                     <Run Text="RETROSPECTIVA " Foreground="White" FontSize="42" FontWeight="Black"/>
                     <Run Text="{Binding CurrentYearDisplay}" Foreground="{StaticResource DegradePrincipal}" FontSize="42" FontWeight="Black"/>
                 </TextBlock>
 
-                <!-- Row 2: Cápsula do Tempo (Baú e Polaroides) -->
+                <!-- Row 2: CÃ¡psula do Tempo (BaÃº e Polaroides) -->
                 <Viewbox Grid.Row="2" Stretch="Uniform" VerticalAlignment="Top">
                     <Grid Width="1000" Height="450">
-                        <!-- Baú (Asset Principal) -->
+                        <!-- BaÃº (Asset Principal) -->
                         <Image Source="{Binding HeaderImagePath}" Stretch="Uniform" HorizontalAlignment="Center"/>
                         
-                        <!-- Nuvem de Polaroides (Camada Dinâmica) -->
+                        <!-- Nuvem de Polaroides (Camada DinÃ¢mica) -->
                         <Canvas>
                             <!-- Polaroide #1 (Top Left) -->
                             <ContentControl Canvas.Left="150" Canvas.Top="50" DataContext="{Binding TopGames[0]}">
@@ -226,7 +235,7 @@
                 </Viewbox>
             </Grid>
 
-            <TextBlock Text="ESTATÍSTICAS GERAIS" Style="{StaticResource MainSectionTitle}"/>
+            <TextBlock Text="ESTATÃSTICAS GERAIS" Style="{StaticResource MainSectionTitle}"/>
             <UniformGrid Columns="4" Margin="0,0,0,32">
                 <UniformGrid.Resources>
                     <Style TargetType="Border" x:Key="NeonCard">
@@ -307,7 +316,7 @@
                     </Grid>
                 </Border>
 
-                <!-- Row 1, Card 3: Sessões -->
+                <!-- Row 1, Card 3: SessÃµes -->
                 <Border Style="{StaticResource NeonCard}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -319,7 +328,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.RowSpan="2" Grid.Column="0" Text="&#xE768;" Style="{StaticResource CardIcon}" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Sessões" Style="{StaticResource CardTitle}" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="SessÃµes" Style="{StaticResource CardTitle}" />
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TotalSessionsCount}" Style="{StaticResource CardValue}" />
                     </Grid>
                 </Border>
@@ -361,7 +370,7 @@
                     </Grid>
                 </Border>
 
-                <!-- Row 2, Card 6: Maior Sequência -->
+                <!-- Row 2, Card 6: Maior SequÃªncia -->
                 <Border Style="{StaticResource NeonCard}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -373,7 +382,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.RowSpan="2" Grid.Column="0" Text="&#xE163;" Style="{StaticResource CardIcon}" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Maior Sequência" Style="{StaticResource CardTitle}" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Maior SequÃªncia" Style="{StaticResource CardTitle}" />
                         <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource CardValue}">
                             <Run Text="{Binding LongestStreakDays, Mode=OneWay}"/><Run Text=" dias"/>
                         </TextBlock>
@@ -397,7 +406,7 @@
                     </Grid>
                 </Border>
 
-                <!-- Row 2, Card 8: Média por Sessão -->
+                <!-- Row 2, Card 8: MÃ©dia por SessÃ£o -->
                 <Border Style="{StaticResource NeonCard}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -409,7 +418,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.RowSpan="2" Grid.Column="0" Text="&#xE916;" Style="{StaticResource CardIcon}" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Média / Sessão" Style="{StaticResource CardTitle}" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="MÃ©dia / SessÃ£o" Style="{StaticResource CardTitle}" />
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding AverageSessionTime}" Style="{StaticResource CardValue}" />
                     </Grid>
                 </Border>
@@ -417,10 +426,10 @@
 
             <Border Style="{StaticResource SectionDivider}"/>
 
-            <!-- ══════════════════════════════════════════════════════ -->
-            <!-- SECTION 3 — DONUT CHART (Playtime by Game Age)       -->
-            <!-- ══════════════════════════════════════════════════════ -->
-            <TextBlock Text="HÁBITOS DE JOGOS" Style="{StaticResource MainSectionTitle}"/>
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <!-- SECTION 3 â€” DONUT CHART (Playtime by Game Age)       -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <TextBlock Text="HÃBITOS DE JOGOS" Style="{StaticResource MainSectionTitle}"/>
             <Grid Margin="0,0,0,24">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -429,7 +438,7 @@
 
                 <Border Style="{StaticResource Card}" Margin="0,0,12,0" Width="300" MinHeight="360">
                     <StackPanel>
-                        <TextBlock Text="DISTRIBUIÇÃO POR PLATAFORMA" Style="{StaticResource SectionLabel}"/>
+                        <TextBlock Text="DISTRIBUIÃ‡ÃƒO POR PLATAFORMA" Style="{StaticResource SectionLabel}"/>
                         <TextBlock Text="Por tempo de jogo" Foreground="{StaticResource TextoSecundario}"
                                    FontSize="11" FontFamily="{StaticResource FontePrimaria}" Margin="0,0,0,16"/>
                         <!-- Simple stacked ratio bars instead of WPF donut (robust) -->
@@ -474,7 +483,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         
-                        <TextBlock Grid.Row="0" Text="DISTRIBUIÇÃO POR GÊNERO" Style="{StaticResource SectionLabel}"/>
+                        <TextBlock Grid.Row="0" Text="DISTRIBUIÃ‡ÃƒO POR GÃŠNERO" Style="{StaticResource SectionLabel}"/>
                         
                         <Grid Grid.Row="1" Margin="0,10,0,6">
                             <Grid.ColumnDefinitions>
@@ -518,7 +527,7 @@
                                                  <Setter.Value>
                                                      <MultiBinding Converter="{StaticResource MultiplyConverter}">
                                                          <Binding Path="Position"/>
-                                                         <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl}" Path="ActualHeight"/>
+                                                         <Binding RelativeSource="{RelativeSource AncestorType=Grid, AncestorLevel=2}" Path="ActualHeight"/>
                                                      </MultiBinding>
                                                  </Setter.Value>
                                              </Setter>
@@ -537,7 +546,7 @@
                                  </ItemsControl>
 
                                  <!-- Bars -->
-                                 <ItemsControl ItemsSource="{Binding GenreBars}" x:Name="BarsAreaParent">
+                                 <ItemsControl ItemsSource="{Binding GenreBars}" x:Name="BarsAreaParent" VerticalAlignment="Stretch">
                                      <ItemsControl.ItemsPanel>
                                          <ItemsPanelTemplate>
                                              <UniformGrid Rows="1"/>
@@ -545,16 +554,16 @@
                                      </ItemsControl.ItemsPanel>
                                      <ItemsControl.ItemTemplate>
                                          <DataTemplate>
-                                             <Grid VerticalAlignment="Bottom" Margin="4,0">
-                                                 <Grid.RowDefinitions>
-                                                     <RowDefinition Height="Auto"/>
-                                                     <RowDefinition Height="Auto"/>
-                                                 </Grid.RowDefinitions>
-
-                                                 <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,4">
+                                              <Grid VerticalAlignment="Bottom" Margin="4,0" Height="260">
+                                                  <Grid.RowDefinitions>
+                                                      <RowDefinition Height="*"/>
+                                                      <RowDefinition Height="Auto"/>
+                                                      <RowDefinition Height="Auto"/>
+                                                  </Grid.RowDefinitions>
+                                                                                           <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,4">
                                                      <Path Data="M12,2 L15,8 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8 z"
-                                                           Fill="{StaticResource DegradePrincipal}" Width="12" Height="12" Stretch="Uniform"
-                                                           HorizontalAlignment="Center" Margin="0,0,0,2">
+                                                            Fill="{StaticResource DegradePrincipal}" Width="12" Height="12" Stretch="Uniform"
+                                                            HorizontalAlignment="Center" Margin="0,0,0,2">
                                                          <Path.Style>
                                                              <Style TargetType="Path">
                                                                  <Setter Property="Visibility" Value="Collapsed" />
@@ -569,11 +578,12 @@
                                                      <TextBlock Text="{Binding PlaytimeFormatted}" Foreground="White" FontSize="7" FontWeight="Bold" HorizontalAlignment="Center"/>
                                                  </StackPanel>
 
-                                                 <Border Grid.Row="1" Background="#3498db" CornerRadius="2,2,0,0" ToolTip="{Binding ToolTipText}">
+                                                 <Border Grid.Row="2" Background="#3498db" CornerRadius="2,2,0,0" ToolTip="{Binding ToolTipText}"
+                                                         Width="40" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                                                      <Border.Height>
                                                          <MultiBinding Converter="{StaticResource MultiplyConverter}">
                                                              <Binding Path="HeightRatio"/>
-                                                             <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl}" Path="ActualHeight"/>
+                                                             <Binding RelativeSource="{RelativeSource AncestorType=Grid}" Path="ActualHeight"/>
                                                          </MultiBinding>
                                                      </Border.Height>
                                                  </Border>
@@ -593,7 +603,7 @@
                                      </ItemsControl.ItemsPanel>
                                      <ItemsControl.ItemTemplate>
                                          <DataTemplate>
-                                             <Border Height="36" Margin="4,4,4,0">
+                                             <Border Height="36" Margin="4,4,4,0" Width="45" HorizontalAlignment="Center">
                                                  <TextBlock Text="{Binding Name}"
                                                             Foreground="#b8b6b4" FontSize="9"
                                                             FontFamily="{StaticResource FontePrimaria}" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -666,7 +676,7 @@
                                             <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="{StaticResource FontePrimaria}" TextTrimming="CharacterEllipsis"/>
                                             <TextBlock Foreground="{StaticResource TextoSecundario}" FontSize="11" FontFamily="{StaticResource FonteNumeros}" Margin="0,2,0,6">
                                                 <Run Text="{Binding GameCount, Mode=OneWay}"/>
-                                                <Run Text=" Jogos — "/>
+                                                <Run Text=" Jogos â€” "/>
                                                 <Run Text="{Binding PlaytimeFormatted, Mode=OneWay}"/>
                                             </TextBlock>
                                             
@@ -743,7 +753,7 @@
                                             <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14" FontWeight="SemiBold" FontFamily="{StaticResource FontePrimaria}" TextTrimming="CharacterEllipsis"/>
                                             <TextBlock Foreground="{StaticResource TextoSecundario}" FontSize="11" FontFamily="{StaticResource FonteNumeros}" Margin="0,2,0,6">
                                                 <Run Text="{Binding GameCount, Mode=OneWay}"/>
-                                                <Run Text=" Jogos — "/>
+                                                <Run Text=" Jogos â€” "/>
                                                 <Run Text="{Binding PlaytimeFormatted, Mode=OneWay}"/>
                                             </TextBlock>
                                             
@@ -773,9 +783,9 @@
 
             <Border Style="{StaticResource SectionDivider}"/>
 
-            <!-- ══════════════════════════════════════════════════════ -->
-            <!-- SECTION X — O MOOD DO ANO (TAGS E GÊNEROS)             -->
-            <!-- ══════════════════════════════════════════════════════ -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <!-- SECTION X â€” O MOOD DO ANO (TAGS E GÃŠNEROS)             -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
             <TextBlock Text="O SEU MOOD DO ANO" Style="{StaticResource MainSectionTitle}"/>
             <Border Style="{StaticResource Card}" Margin="0,0,0,24">
                 <Grid Margin="24">
@@ -879,9 +889,9 @@
 
             <Border Style="{StaticResource SectionDivider}"/>
 
-            <!-- ══════════════════════════════════════════════════════ -->
-            <!-- SECTION 4 — TOP GAMES GALLERY                        -->
-            <!-- ══════════════════════════════════════════════════════ -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <!-- SECTION 4 â€” TOP GAMES GALLERY                        -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
             <TextBlock Text="SEUS JOGOS FAVORITOS" Style="{StaticResource MainSectionTitle}"/>
             <ItemsControl ItemsSource="{Binding TopGames}" Margin="0,0,0,24">
                 <ItemsControl.ItemsPanel>
@@ -909,6 +919,14 @@
                                                        FontSize="13" FontWeight="Black" FontFamily="{StaticResource FonteNumeros}"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
+
+                                        <!-- Completed Icon -->
+                                        <Border VerticalAlignment="Top" HorizontalAlignment="Right" Margin="8"
+                                                Background="#4CAF50" Width="28" Height="28" CornerRadius="14"
+                                                Visibility="{Binding IsCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" Foreground="White" 
+                                                       FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
                                     </Grid>
                                 </Border>
                                 
@@ -929,9 +947,9 @@
 
             <Border Style="{StaticResource SectionDivider}"/>
 
-            <!-- ══════════════════════════════════════════════════════ -->
-            <!-- SECTION 5 — TIMELINE VIEW (STEAM-PERFECT ZIGZAG)     -->
-            <!-- ══════════════════════════════════════════════════════ -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <!-- SECTION 5 â€” TIMELINE VIEW (STEAM-PERFECT ZIGZAG)     -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
             <TextBlock Text="EXPLORE SEU ANO" Style="{StaticResource MainSectionTitle}"/>
 
             <ItemsControl ItemsSource="{Binding TimelineMonths}" Margin="0,0,0,40">
@@ -994,9 +1012,9 @@
                                             </Border>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
-                                            <TextBlock Text="🎮" FontSize="14" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                            <TextBlock Text="ðŸŽ®" FontSize="14" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                             <TextBlock Text="{Binding GameCount}" Foreground="White" FontSize="14" FontWeight="Bold" FontFamily="{StaticResource FonteNumeros}" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                            <TextBlock Text="🕒" FontSize="14" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                            <TextBlock Text="ðŸ•’" FontSize="14" VerticalAlignment="Center" Margin="0,0,4,0"/>
                                             <TextBlock Text="{Binding TotalPlaytimeFormatted}" Foreground="White" FontSize="14" FontWeight="Bold" FontFamily="{StaticResource FonteNumeros}" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </Grid>
@@ -1028,6 +1046,14 @@
                                                             CornerRadius="0,0,0,4">
                                                         <TextBlock Text="PRIMEIRO" Foreground="Black" 
                                                                    FontSize="10" FontWeight="Black" FontFamily="{StaticResource FonteTitulos}"/>
+                                                    </Border>
+
+                                                    <!-- Completed Icon -->
+                                                    <Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="6"
+                                                            Background="#4CAF50" Width="24" Height="24" CornerRadius="12"
+                                                            Visibility="{Binding ShouldShowCompletedIcon, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" Foreground="White" 
+                                                                   FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </Border>
 
                                                     <!-- BOTTOM TIME OVERLAY -->
@@ -1069,10 +1095,10 @@
 
             <Border Style="{StaticResource SectionDivider}"/>
 
-            <!-- ══════════════════════════════════════════════════════ -->
-            <!-- SECTION 6 — PERFIL HORÁRIO (SPLINE AREA)             -->
-            <!-- ══════════════════════════════════════════════════════ -->
-            <TextBlock Text="PERFIL HORÁRIO: QUANDO VOCÊ MAIS JOGA" Style="{StaticResource MainSectionTitle}" HorizontalAlignment="Center"/>
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <!-- SECTION 6 â€” PERFIL HORÃRIO (SPLINE AREA)             -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <TextBlock Text="PERFIL HORÃRIO: QUANDO VOCÃŠ MAIS JOGA" Style="{StaticResource MainSectionTitle}" HorizontalAlignment="Center"/>
             <Border Style="{StaticResource Card}" Margin="0,0,0,24">
                 <StackPanel>
                     <!-- Badge / Persona -->
@@ -1220,10 +1246,10 @@
 
             <Border Style="{StaticResource SectionDivider}"/>
 
-            <!-- ══════════════════════════════════════════════════════ -->
-            <!-- SECTION 7 — MONTHLY ACTIVITY CALENDAR                -->
-            <!-- ══════════════════════════════════════════════════════ -->
-            <TextBlock Text="CALENDÁRIO DE ATIVIDADES" Style="{StaticResource MainSectionTitle}"/>
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <!-- SECTION 7 â€” MONTHLY ACTIVITY CALENDAR                -->
+            <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+            <TextBlock Text="CALENDÃRIO DE ATIVIDADES" Style="{StaticResource MainSectionTitle}"/>
             <Border Style="{StaticResource Card}" Margin="0,0,0,24">
                 <StackPanel>
 
@@ -1337,11 +1363,11 @@
                             Command="{Binding HideMoodDetailsCommand}"
                             Background="Transparent" Foreground="White" BorderThickness="0"
                             Padding="10,5" Cursor="Hand" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
-                    <TextBlock Grid.Column="1" Text="POR TRÁS DO SEU PERFIL" 
+                    <TextBlock Grid.Column="1" Text="POR TRÃS DO SEU PERFIL" 
                                Style="{StaticResource MainSectionTitle}" Margin="0" HorizontalAlignment="Right" FontSize="20"/>
                 </Grid>
 
-                <!-- Seção 1: Veredito Anual -->
+                <!-- SeÃ§Ã£o 1: Veredito Anual -->
                 <Border Style="{StaticResource Card}" Background="#1b2838" Padding="30" Margin="0,0,0,30">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -1360,19 +1386,19 @@
                     </Grid>
                 </Border>
 
-                <!-- Seção 2: Como chegamos nisso -->
-                <TextBlock Text="A LÓGICA DO ALGORITMO" Style="{StaticResource SectionLabel}"/>
+                <!-- SeÃ§Ã£o 2: Como chegamos nisso -->
+                <TextBlock Text="A LÃ“GICA DO ALGORITMO" Style="{StaticResource SectionLabel}"/>
                 <Grid Margin="0,0,0,40">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     
-                    <!-- Pontuação por Gêneros -->
+                    <!-- PontuaÃ§Ã£o por GÃªneros -->
                     <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,10,0">
                         <StackPanel>
-                            <TextBlock Text="Gêneros que dominaram" Foreground="White" FontWeight="Bold" Margin="0,0,0,15"/>
-                            <TextBlock Text="O sistema analisa as tags e gêneros de cada jogo e soma o tempo total de cada categoria. O mood vencedor é aquele que acumulou mais horas." 
+                            <TextBlock Text="GÃªneros que dominaram" Foreground="White" FontWeight="Bold" Margin="0,0,0,15"/>
+                            <TextBlock Text="O sistema analisa as tags e gÃªneros de cada jogo e soma o tempo total de cada categoria. O mood vencedor Ã© aquele que acumulou mais horas." 
                                        Foreground="{StaticResource TextoSecundario}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,20"/>
                             <ItemsControl ItemsSource="{Binding MoodTags}">
                                 <ItemsControl.ItemTemplate>
@@ -1394,8 +1420,8 @@
                     <!-- Jogos que influenciaram -->
                     <Border Grid.Column="1" Style="{StaticResource Card}" Margin="10,0,0,0">
                         <StackPanel>
-                            <TextBlock Text="Principais Influências" Foreground="White" FontWeight="Bold" Margin="0,0,0,15"/>
-                            <TextBlock Text="Estes jogos foram os maiores responsáveis por definir sua personalidade este ano, devido ao alto tempo de jogo nestas categorias." 
+                            <TextBlock Text="Principais InfluÃªncias" Foreground="White" FontWeight="Bold" Margin="0,0,0,15"/>
+                            <TextBlock Text="Estes jogos foram os maiores responsÃ¡veis por definir sua personalidade este ano, devido ao alto tempo de jogo nestas categorias." 
                                        Foreground="{StaticResource TextoSecundario}" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,20"/>
                             <ItemsControl ItemsSource="{Binding Influencers}">
                                 <ItemsControl.ItemsPanel>
@@ -1420,9 +1446,9 @@
                     </Border>
                 </Grid>
 
-                <!-- ══════════════════════════════════════════════════════ -->
-                <!-- SECTION 8 — JORNADA MENSAL                           -->
-                <!-- ══════════════════════════════════════════════════════ -->
+                <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+                <!-- SECTION 8 â€” JORNADA MENSAL                           -->
+                <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
                 <TextBlock Text="SUA JORNADA MENSAL" Style="{StaticResource MainSectionTitle}"/>
                 <ItemsControl ItemsSource="{Binding MonthlyMoodHistory}" Margin="0,0,0,50">
                     <ItemsControl.ItemsPanel>
@@ -1439,17 +1465,17 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
-                                    <!-- Cabeçalho: Nome do Mês -->
+                                    <!-- CabeÃ§alho: Nome do MÃªs -->
                                     <TextBlock Grid.Row="0" Text="{Binding MonthName}" Foreground="{StaticResource AcentoCiano}" FontSize="12" FontWeight="Black" Margin="0,0,0,12"/>
 
-                                    <!-- Conteúdo Principal (Com Dados) -->
+                                    <!-- ConteÃºdo Principal (Com Dados) -->
                                     <Grid Grid.Row="1" Visibility="{Binding HasData, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="60"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <!-- Esquerda: Título e Tags -->
+                                        <!-- Esquerda: TÃ­tulo e Tags -->
                                         <StackPanel Grid.Column="0">
                                             <TextBlock Text="{Binding Title}" Foreground="{StaticResource AcentoMagenta}" FontSize="10" FontWeight="Black" Margin="0,0,0,6"/>
                                             <TextBlock Text="Destaque:" Foreground="{StaticResource TextoSecundario}" FontSize="8" Margin="0,2,0,4"/>
@@ -1471,7 +1497,7 @@
                                             </ItemsControl>
                                         </StackPanel>
 
-                                        <!-- Direita: Insígnia -->
+                                        <!-- Direita: InsÃ­gnia -->
                                         <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
                                             <Path Data="{Binding PersonaId, Converter={StaticResource MoodIconConverter}}" 
                                                   Fill="White" Stretch="Uniform" Opacity="0.25" Width="55" Height="55"/>
@@ -1480,7 +1506,7 @@
 
                                     <!-- Estado Vazio (Sem Dados) -->
                                     <TextBlock Grid.Row="1" Visibility="{Binding HasData, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"
-                                               Text="Assim que o sistema tiver informações, ele apresentará o mood."
+                                               Text="Assim que o sistema tiver informaÃ§Ãµes, ele apresentarÃ¡ o mood."
                                                Foreground="{StaticResource TextoSecundario}" FontSize="9" FontStyle="Italic" TextWrapping="Wrap" VerticalAlignment="Center"/>
                                 </Grid>
                             </Border>
@@ -1488,7 +1514,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <!-- Seção 4: Dicionário de Moods -->
+                <!-- SeÃ§Ã£o 4: DicionÃ¡rio de Moods -->
                 <TextBlock Text="GUIA DE PERSONALIDADES" Style="{StaticResource SectionLabel}"/>
                 <ItemsControl ItemsSource="{Binding MoodDictionary}">
                     <ItemsControl.ItemTemplate>
@@ -1540,7 +1566,7 @@
                     <Image Source="{Binding SelectedGameDetail.BackgroundImagePath}" Stretch="UniformToFill" Opacity="0.1" />
                     <Border Background="{StaticResource FundoCard}" Opacity="0.4"/>
 
-                    <!-- Botão Fechar (X) no Canto Superior Direito -->
+                    <!-- BotÃ£o Fechar (X) no Canto Superior Direito -->
                     <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Panel.ZIndex="10"
                             Command="{Binding CloseGameDetailCommand}" 
                             Background="Transparent" BorderThickness="0" Width="32" Height="32" Cursor="Hand">
@@ -1562,32 +1588,50 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Coluna Esquerda: Capa e Info Básica -->
+                        <!-- Coluna Esquerda: Capa e Info BÃ¡sica -->
                         <StackPanel Grid.Column="0">
                             <Border CornerRadius="8" ClipToBounds="True" Height="440" Background="#0e141b">
                                 <Border.Effect>
                                     <DropShadowEffect Color="Black" BlurRadius="15" ShadowDepth="5" Opacity="0.8"/>
                                 </Border.Effect>
-                                <Image Source="{Binding SelectedGameDetail.CoverImagePath}" Stretch="UniformToFill" />
+                                <Grid>
+                                    <Image Source="{Binding SelectedGameDetail.CoverImagePath}" Stretch="UniformToFill" />
+
+                                    <!-- Completed Icon -->
+                                    <Border VerticalAlignment="Top" HorizontalAlignment="Right" Margin="15"
+                                            Background="#4CAF50" Width="40" Height="40" CornerRadius="20"
+                                            Visibility="{Binding SelectedGameDetail.IsCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" Foreground="White" 
+                                                   FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
                             </Border>
                             <TextBlock Text="{Binding SelectedGameDetail.Name}" Foreground="White" FontSize="20" FontWeight="Black" Margin="0,15,0,5" TextWrapping="Wrap" TextAlignment="Left"/>
                             <TextBlock Text="{Binding SelectedGameDetail.Platform}" Foreground="{StaticResource AcentoCiano}" FontSize="12" FontWeight="Bold" Margin="0,0,0,15"/>
                             
                             <Button Content="Saber Mais no Playnite" Command="{Binding OpenGameInPlayniteCommand}" 
                                     CommandParameter="{Binding SelectedGameDetail.GameId}"
-                                    Style="{StaticResource HeaderButton}" Margin="0,10,0,0" Padding="8"/>
+                                    Margin="0,10,0,0" Padding="15,8" Foreground="White" FontWeight="Bold" Cursor="Hand" BorderThickness="0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{StaticResource DegradePrincipal}" CornerRadius="20" Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
                         </StackPanel>
 
-                        <!-- Coluna Direita: Stats e Gráfico -->
+                        <!-- Coluna Direita: Stats e GrÃ¡fico -->
                         <Grid Grid.Column="1" Margin="30,0,0,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <!-- Mini Cards de Estatísticas -->
+                            <!-- Mini Cards de EstatÃ­sticas -->
                             <UniformGrid Rows="1" Columns="4" Grid.Row="0" Margin="0,0,0,25">
                                 <StackPanel>
                                     <TextBlock Text="TOTAL JOGADO NO ANO" Foreground="{StaticResource TextoSecundario}" FontSize="9" FontWeight="Bold"/>
@@ -1598,11 +1642,11 @@
                                     <TextBlock Text="{Binding SelectedGameDetail.UnlockedAchievementsText}" Foreground="{StaticResource AcentoCiano}" FontSize="24" FontWeight="Black"/>
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="SESSÕES" Foreground="{StaticResource TextoSecundario}" FontSize="9" FontWeight="Bold"/>
+                                    <TextBlock Text="SESSÃ•ES" Foreground="{StaticResource TextoSecundario}" FontSize="9" FontWeight="Bold"/>
                                     <TextBlock Text="{Binding SelectedGameDetail.TotalSessionsText}" Foreground="{StaticResource AcentoDourado}" FontSize="24" FontWeight="Black"/>
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBlock Text="PERÍODO" Foreground="{StaticResource TextoSecundario}" FontSize="9" FontWeight="Bold"/>
+                                    <TextBlock Text="PERÃODO" Foreground="{StaticResource TextoSecundario}" FontSize="9" FontWeight="Bold"/>
                                     <TextBlock Text="{Binding SelectedGameDetail.PreferredPeriod}" Foreground="White" FontSize="10" FontWeight="Black" TextWrapping="Wrap" Margin="0,5,0,0"/>
                                 </StackPanel>
                             </UniformGrid>
@@ -1614,7 +1658,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <!-- Gráfico de Sessões -->
+                            <!-- GrÃ¡fico de SessÃµes -->
                             <Grid Grid.Row="2" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -1622,7 +1666,7 @@
                                 </Grid.ColumnDefinitions>
                                 
                                 <!-- Y-Axis Labels -->
-                                <ItemsControl ItemsSource="{Binding SelectedGameDetail.YAxisLabels}" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Stretch">
+                                <ItemsControl ItemsSource="{Binding SelectedGameDetail.YAxisLabels}" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Top" Height="140">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate><Canvas Width="30"/></ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
@@ -1632,7 +1676,7 @@
                                                 <Setter.Value>
                                                     <MultiBinding Converter="{StaticResource MultiplyConverter}">
                                                         <Binding Path="Position"/>
-                                                        <Binding RelativeSource="{RelativeSource AncestorType=Canvas}" Path="ActualHeight"/>
+                                                        <Binding Source="140"/>
                                                     </MultiBinding>
                                                 </Setter.Value>
                                             </Setter>
@@ -1696,15 +1740,128 @@
                                                         <Border.Height>
                                                             <MultiBinding Converter="{StaticResource MultiplyConverter}">
                                                                 <Binding Path="Ratio"/>
-                                                                <Binding RelativeSource="{RelativeSource AncestorType=Grid, AncestorLevel=2}" Path="ActualHeight"/>
+                                                                <Binding RelativeSource="{RelativeSource AncestorType=Grid}" Path="ActualHeight"/>
                                                             </MultiBinding>
-                                                        </Border.Height>
+                                                      </Border.Height>
                                                     </Border>
                                                     <TextBlock Text="{Binding MonthName}" Foreground="{StaticResource TextoSecundario}" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-18"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
+                                </Grid>
+                            </Grid>
+                            
+                            <!-- Gráfico de Linha do Tempo de Sessões -->
+                            <Grid Grid.Row="3" Margin="0,15,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Text="HISTÃ“RICO DE SESSÃ•ES (HORAS POR SESSÃƒO)" Foreground="{StaticResource TextoSecundario}" FontSize="9" FontWeight="Bold" Margin="0,0,0,10"/>
+                                
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Y-Axis Labels (Sessions) -->
+                                    <ItemsControl ItemsSource="{Binding SelectedGameDetail.SessionYAxisLabels}" Grid.Column="0" Margin="0,40,10,0" VerticalAlignment="Top" Height="100">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate><Canvas Width="30"/></ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemContainerStyle>
+                                            <Style TargetType="ContentPresenter">
+                                                <Setter Property="Canvas.Top">
+                                                    <Setter.Value>
+                                                        <MultiBinding Converter="{StaticResource MultiplyConverter}">
+                                                            <Binding Path="Position"/>
+                                                            <Binding Source="100"/>
+                                                        </MultiBinding>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Canvas.Right" Value="0"/>
+                                            </Style>
+                                        </ItemsControl.ItemContainerStyle>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Label}" Foreground="{StaticResource TextoSecundario}" FontSize="7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-4,0,0"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <!-- Graph Area with Horizontal Scroll -->
+                                    <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <Grid Height="140">
+                                            <!-- Grid Lines -->
+                                            <ItemsControl ItemsSource="{Binding SelectedGameDetail.SessionYAxisLabels}" VerticalAlignment="Top" Height="100" Margin="0,40,0,0">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate><Canvas/></ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemContainerStyle>
+                                                    <Style TargetType="ContentPresenter">
+                                                        <Setter Property="Canvas.Top">
+                                                            <Setter.Value>
+                                                                <MultiBinding Converter="{StaticResource MultiplyConverter}">
+                                                                    <Binding Path="Position"/>
+                                                                    <Binding Source="100"/>
+                                                                </MultiBinding>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="Canvas.Left" Value="0"/>
+                                                        <Setter Property="Canvas.Right" Value="0"/>
+                                                    </Style>
+                                                </ItemsControl.ItemContainerStyle>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Rectangle Height="1" Fill="#0Affffff" Width="1000"/> 
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
+                                            <!-- Session Bars -->
+                                            <ItemsControl ItemsSource="{Binding SelectedGameDetail.SessionsGraph}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate><StackPanel Orientation="Horizontal" Margin="0,0,20,0"/></ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid VerticalAlignment="Bottom" Height="140" Margin="5,0" ToolTip="{Binding ToolTip}">
+                                                            <!-- Completion Indicator -->
+                                                            <Border VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,0,0,0" Height="20"
+                                                                    Visibility="{Binding IsCompletionSession, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                <StackPanel>
+                                                                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" Foreground="#4CAF50" FontSize="12" HorizontalAlignment="Center"/>
+                                                                    <TextBlock Text="CONCLUÃ DO" Foreground="#4CAF50" FontSize="6" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                                </StackPanel>
+                                                            </Border>
+
+                                                            <Border Background="{StaticResource DegradeCiano}" Width="8" CornerRadius="2,2,0,0" VerticalAlignment="Bottom" Margin="0,0,0,20">
+                                                                <Border.Height>
+                                                                    <MultiBinding Converter="{StaticResource MultiplyConverter}">
+                                                                        <Binding Path="Ratio"/>
+                                                                        <Binding Source="100"/>
+                                                                    </MultiBinding>
+                                                                </Border.Height>
+                                                                <Border.Style>
+                                                                    <Style TargetType="Border">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsCompletionSession}" Value="True">
+                                                                                <Setter Property="Background" Value="#4CAF50"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Border.Style>
+                                                            </Border>
+                                                            <TextBlock Text="{Binding SessionIndex}" Foreground="{StaticResource TextoSecundario}" FontSize="7" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,5"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Grid>
+                                    </ScrollViewer>
                                 </Grid>
                             </Grid>
                         </Grid>

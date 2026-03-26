@@ -51,7 +51,7 @@ namespace RetrospectiveSteam.Services
     public class MonthBarViewModelStub { public string Month { get; set; } public double Value { get; set; } }
 
     // Stubs for reconstruction - these will be mapped to actual ViewModels in RetrospectiveViewModel
-    public class GameCardViewModelStub { public GameStatsData Game { get; set; } public string Name { get { return Game.Name; } } public string CoverImagePath { get { return Game.CoverImagePath; } } public Guid GameId { get { return Game.GameId; } } public List<string> Genres { get { return Game.Genres; } } }
+    public class GameCardViewModelStub { public GameStatsData Game { get; set; } public string Name { get { return Game.Name; } } public string CoverImagePath { get { return Game.CoverImagePath; } } public Guid GameId { get { return Game.GameId; } } public List<string> Genres { get { return Game.Genres; } } public bool IsCompleted { get { return Game.IsCompleted; } } }
     public class MoodTagViewModelStub { public string Name { get; set; } public int Count { get; set; } public string PlaytimeFormatted { get; set; } }
     public class TimelineMonthViewModelStub { public string MonthName { get; set; } public List<GameCardViewModelStub> TopGames { get; set; } public string MoodTitle { get; set; } public string MoodSubtitle { get; set; } public string PersonaId { get; set; } }
     public class HourlyProfileBarViewModelStub { public string Label { get; set; } public double Seconds { get; set; } public double Ratio { get; set; } }

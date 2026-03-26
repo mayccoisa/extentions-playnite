@@ -12,6 +12,7 @@ namespace RetrospectiveSteam.ViewModels
         
         public string Name { get { return Game.Name; } }
         public string CoverImagePath { get { return Game.CoverImagePath; } }
+        public bool IsCompleted { get { return Game.IsCompleted; } }
         public string BackgroundImagePath { get { return Game.BackgroundImagePath; } }
         public string Platform { get { return Game.Platforms != null ? string.Join(", ", Game.Platforms) : "PC"; } }
         public string Genres { get { return Game.Genres != null ? string.Join(" • ", Game.Genres) : ""; } }
@@ -30,16 +31,22 @@ namespace RetrospectiveSteam.ViewModels
         public List<AxisLabelViewModel> YAxisLabels { get; private set; }
         public double MaxHours { get; private set; }
 
+        public List<SessionGraphData> SessionsGraph { get; private set; }
+        public List<AxisLabelViewModel> SessionYAxisLabels { get; private set; }
+        public double SessionMaxHours { get; private set; }
+
         public GameDetailViewModel(GameStatsData game, List<ActivitySession> sessions, long totalGenrePlaytime)
         {
             this.Game = game;
             this.Sessions = sessions;
 
             this.YAxisLabels = new List<AxisLabelViewModel>();
+            this.SessionYAxisLabels = new List<AxisLabelViewModel>();
             CalculateMarathon(sessions);
             CalculatePreferredPeriod(sessions);
             CalculateSynergy(game, totalGenrePlaytime);
             BuildMonthlyGraph(sessions);
+            BuildSessionsGraph(game, sessions);
             this.TotalSessionsText = sessions != null ? sessions.Count.ToString() : "0";
         }
 
@@ -130,6 +137,69 @@ namespace RetrospectiveSteam.ViewModels
             }).ToList();
         }
 
+        private void BuildSessionsGraph(GameStatsData game, List<ActivitySession> sessions)
+        {
+            if (sessions == null || !sessions.Any())
+            {
+                SessionsGraph = new List<SessionGraphData>();
+                return;
+            }
+
+            // Order chronologically
+            var sortedSessions = sessions.OrderBy(s => s.Date).ToList();
+            
+            // Limit to last 30 sessions if there are too many, to avoid overcrowding the UI
+            // But let's try to show all first.
+            double maxSecs = sortedSessions.Max(s => s.Seconds);
+            double maxHours = maxSecs / 3600.0;
+            
+            if (maxHours <= 2) SessionMaxHours = 2;
+            else if (maxHours <= 5) SessionMaxHours = 5;
+            else SessionMaxHours = Math.Ceiling(maxHours / 2.0) * 2.0;
+
+            // Mark completion if it happened during a session
+            // game.CompletionDate is from native or success story
+            DateTime? compDate = game.CompletionDate;
+
+            SessionsGraph = sortedSessions.Select((s, idx) => {
+                bool isComp = false;
+                if (compDate.HasValue)
+                {
+                    // If session end time is after completion date AND completion date is after session start date
+                    // We mark the FIRST session that ends after the completion date as the completion session.
+                    // This is an approximation.
+                    var sessionEnd = s.Date.AddSeconds(s.Seconds);
+                    if (compDate.Value <= sessionEnd && compDate.Value >= s.Date)
+                    {
+                        isComp = true;
+                        compDate = null; // Mark only once
+                    }
+                }
+
+                return new SessionGraphData
+                {
+                    SessionIndex = idx + 1,
+                    Hours = s.Seconds / 3600.0,
+                    Ratio = (double)s.Seconds / (SessionMaxHours * 3600.0),
+                    IsCompletionSession = isComp,
+                    PlaytimeFormatted = FormatPlaytime(s.Seconds),
+                    DateFormatted = s.Date.ToString("dd/MM")
+                };
+            }).ToList();
+
+            // Y Axis for sessions
+            SessionYAxisLabels.Clear();
+            for (int i = 0; i <= 4; i++)
+            {
+                double labelVal = SessionMaxHours - (i * (SessionMaxHours / 4.0));
+                SessionYAxisLabels.Add(new AxisLabelViewModel 
+                { 
+                    Label = labelVal % 1 == 0 ? labelVal.ToString("0") + "h" : labelVal.ToString("0.0") + "h",
+                    Position = i * 0.25
+                });
+            }
+        }
+
         private string GetMonthShortName(int m)
         {
             switch (m)
@@ -156,5 +226,16 @@ namespace RetrospectiveSteam.ViewModels
         public long Value { get; set; }
         public double Ratio { get; set; }
         public string PlaytimeFormatted { get; set; }
+    }
+
+    public class SessionGraphData
+    {
+        public int SessionIndex { get; set; }
+        public double Hours { get; set; }
+        public double Ratio { get; set; }
+        public bool IsCompletionSession { get; set; }
+        public string PlaytimeFormatted { get; set; }
+        public string DateFormatted { get; set; }
+        public string ToolTip { get { return string.Format("Sessão {0}: {1} ({2})", SessionIndex, PlaytimeFormatted, DateFormatted); } }
     }
 }

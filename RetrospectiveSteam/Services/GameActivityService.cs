@@ -20,8 +20,7 @@ namespace RetrospectiveSteam.Services
 
         private string FindGameActivityPath()
         {
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var extensionsData = Path.Combine(appData, "Playnite", "ExtensionsData");
+            var extensionsData = playniteApi.Paths.ExtensionsDataPath;
             
             if (!Directory.Exists(extensionsData)) return null;
 
