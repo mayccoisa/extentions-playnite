@@ -40,7 +40,11 @@ namespace RetrospectiveSteam
             {
                 new MainMenuItem
                 {
+<<<<<<< HEAD
                     Description = "Abrir Retrospectiva anual",
+=======
+                    Description = "Show Retrospective Steam",
+>>>>>>> origin/main
                     MenuSection = "@Retrospective",
                     Action = (mainMenuItem) =>
                     {
@@ -56,7 +60,11 @@ namespace RetrospectiveSteam
             {
                 new SidebarItem
                 {
+<<<<<<< HEAD
                     Title = "Retrospectiva anual",
+=======
+                    Title = "Retrospective Steam",
+>>>>>>> origin/main
                     Type = SiderbarItemType.View,
                     Icon = new TextBlock
                     {
@@ -85,7 +93,11 @@ namespace RetrospectiveSteam
                 ShowMinimizeButton = true
             });
 
+<<<<<<< HEAD
             window.Title = "Retrospectiva anual";
+=======
+            window.Title = "Retrospective Steam 2025";
+>>>>>>> origin/main
             window.Content = view;
             window.Width = 1200;
             window.Height = 800;

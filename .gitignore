@@ -11,7 +11,10 @@
 *.pext
 *.pxtl
 extension.yaml.bak
+<<<<<<< HEAD
 backups/
+=======
+>>>>>>> origin/main
 
 # OS specific
 Thumbs.db

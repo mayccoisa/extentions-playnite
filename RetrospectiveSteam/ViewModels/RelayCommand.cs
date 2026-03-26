@@ -46,6 +46,7 @@ namespace RetrospectiveSteam.ViewModels
 
         public bool CanExecute(object parameter)
         {
+<<<<<<< HEAD
             if (_canExecute == null) return true;
             if (parameter == null || parameter == System.Windows.DependencyProperty.UnsetValue)
                 return _canExecute(default(T));
@@ -64,6 +65,14 @@ namespace RetrospectiveSteam.ViewModels
             
             if (parameter is T) _execute((T)parameter);
             else _execute(default(T));
+=======
+            return _canExecute == null || _canExecute((T)parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute((T)parameter);
+>>>>>>> origin/main
         }
 
         public event EventHandler CanExecuteChanged

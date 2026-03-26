@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Build and Deploy script for Retrospectiva anual
+=======
+# Build and Deploy script for Retrospective Steam 2025
+>>>>>>> origin/main
 # 
 # This script builds the extension and copies it to the Playnite extensions folder.
 
