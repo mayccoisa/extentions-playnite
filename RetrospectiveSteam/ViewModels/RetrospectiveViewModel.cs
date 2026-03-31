@@ -7,10 +7,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
-using RetrospectiveSteam.Services;
+using RetrospectivaAnual.Services;
 using System.Text;
 
-namespace RetrospectiveSteam.ViewModels
+namespace RetrospectivaAnual.ViewModels
 {
     public partial class RetrospectiveViewModel : INotifyPropertyChanged
     {
@@ -134,7 +134,6 @@ namespace RetrospectiveSteam.ViewModels
         public ObservableCollection<StudioViewModel> TopPublishers { get; private set; }
         public ObservableCollection<MoodResult> MonthlyMoodHistory { get; private set; }
         public ObservableCollection<MoodInfo> MoodDictionary { get; private set; }
-<<<<<<< HEAD
         
         private int _timelineColumns = 5;
         public int TimelineColumns
@@ -142,8 +141,6 @@ namespace RetrospectiveSteam.ViewModels
             get { return _timelineColumns; }
             set { SetProperty(ref _timelineColumns, value, "TimelineColumns"); }
         }
-=======
->>>>>>> origin/main
 
         private bool _moodDetailsVisibility;
         public bool MoodDetailsVisibility
@@ -232,12 +229,8 @@ namespace RetrospectiveSteam.ViewModels
                         Game = g.Game,
                         RankText = (i + 1).ToString(),
                         PlaytimeFormatted = FormatPlaytime(g.Game.TotalPlaytimeSeconds),
-<<<<<<< HEAD
                         IsCompleted = g.IsCompleted,
                         IsFirstTime = g.Game.FirstPlayed.HasValue && g.Game.FirstPlayed.Value.Year == SelectedYear
-=======
-                        IsCompleted = g.IsCompleted
->>>>>>> origin/main
                     });
                 }
 
@@ -302,34 +295,23 @@ namespace RetrospectiveSteam.ViewModels
 
                 DonutSlices.Clear();
                 var colors = new[] { "#67c1f5", "#df206c", "#2a475e", "#c7d5e0", "#171a21" };
-<<<<<<< HEAD
                 double currentAngle = -90; // Start at the top
                 for (int i = 0; i < stats.PlatformBars.Count; i++)
                 {
                     var p = stats.PlatformBars[i];
                     double sweepAngle = (p.Ratio * 360.0);
                     
-=======
-                for (int i = 0; i < stats.PlatformBars.Count; i++)
-                {
-                    var p = stats.PlatformBars[i];
->>>>>>> origin/main
                     DonutSlices.Add(new DonutSliceViewModel { 
                         Name = p.Name, 
                         Value = p.Ratio * 100, 
                         Color = colors[i % colors.Length],
-<<<<<<< HEAD
                         TimeText = p.Playtime,
                         StartAngle = currentAngle,
                         EndAngle = currentAngle + sweepAngle,
-                        PathData = GetPieSlicePath(currentAngle, sweepAngle, 100)
+                        PathData = GetPieSlicePath(currentAngle, sweepAngle, 50)
                     });
                     
                     currentAngle += sweepAngle;
-=======
-                        TimeText = p.Playtime 
-                    });
->>>>>>> origin/main
                 }
 
                 TopDevelopers.Clear();
@@ -528,7 +510,6 @@ namespace RetrospectiveSteam.ViewModels
             return string.Format("{0}m", m);
         }
 
-<<<<<<< HEAD
         private string GetPieSlicePath(double startAngle, double sweepAngle, double radius)
         {
             if (sweepAngle >= 360) sweepAngle = 359.99;
@@ -552,8 +533,6 @@ namespace RetrospectiveSteam.ViewModels
                 centerX, centerY, x1, y1, radius, isLargeArc, x2, y2);
         }
 
-=======
->>>>>>> origin/main
         private string GetSplinePath(List<HourlyProfileBarViewModel> bars, bool closePath)
         {
             if (bars == null || bars.Count == 0) return "";
@@ -610,10 +589,7 @@ namespace RetrospectiveSteam.ViewModels
         public Guid GameId { get { return Game.GameId; } }
         public List<string> Genres { get { return Game.Genres; } }
         public bool IsCompleted { get; set; }
-<<<<<<< HEAD
         public bool IsFirstTime { get; set; }
-=======
->>>>>>> origin/main
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
@@ -629,14 +605,11 @@ namespace RetrospectiveSteam.ViewModels
         public double BarWidthPx { get { return (Value / 100.0) * 220.0; } }
         public string BarBrush { get { return Color; } }
         public string TimeText { get; set; }
-<<<<<<< HEAD
         
         // Pie Chart Properties
         public double StartAngle { get; set; }
         public double EndAngle { get; set; }
         public string PathData { get; set; }
-=======
->>>>>>> origin/main
     }
 
     public class GenreBarViewModel 

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RetrospectiveSteam
+namespace RetrospectivaAnual
 {
-    public class RetrospectiveSteamSettings : ObservableObject
+    public class RetrospectivaAnualSettings : ObservableObject
     {
         private string option1 = string.Empty;
         private bool option2 = false;
@@ -22,13 +22,13 @@ namespace RetrospectiveSteam
         public bool OptionThatWontBeSaved { get { return optionThatWontBeSaved; } set { SetValue(ref optionThatWontBeSaved, value); } }
     }
 
-    public class RetrospectiveSteamSettingsViewModel : ObservableObject, ISettings
+    public class RetrospectivaAnualSettingsViewModel : ObservableObject, ISettings
     {
-        private readonly RetrospectiveSteamPlugin plugin;
-        private RetrospectiveSteamSettings editingClone { get; set; }
+        private readonly RetrospectivaAnualPlugin plugin;
+        private RetrospectivaAnualSettings editingClone { get; set; }
 
-        private RetrospectiveSteamSettings settings;
-        public RetrospectiveSteamSettings Settings
+        private RetrospectivaAnualSettings settings;
+        public RetrospectivaAnualSettings Settings
         {
             get { return settings; }
             set
@@ -38,13 +38,13 @@ namespace RetrospectiveSteam
             }
         }
 
-        public RetrospectiveSteamSettingsViewModel(RetrospectiveSteamPlugin plugin)
+        public RetrospectivaAnualSettingsViewModel(RetrospectivaAnualPlugin plugin)
         {
             // Injecting your plugin instance is required for Save/Load method because Playnite saves data to a location based on what plugin requested the operation.
             this.plugin = plugin;
 
             // Load saved settings.
-            var savedSettings = plugin.LoadPluginSettings<RetrospectiveSteamSettings>();
+            var savedSettings = plugin.LoadPluginSettings<RetrospectivaAnualSettings>();
 
             // LoadPluginSettings returns null if no saved data is available.
             if (savedSettings != null)
@@ -53,7 +53,7 @@ namespace RetrospectiveSteam
             }
             else
             {
-                Settings = new RetrospectiveSteamSettings();
+                Settings = new RetrospectivaAnualSettings();
             }
         }
 

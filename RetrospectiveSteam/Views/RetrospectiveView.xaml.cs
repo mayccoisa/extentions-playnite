@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Data;
-using RetrospectiveSteam.ViewModels;
+using RetrospectivaAnual.ViewModels;
 
-namespace RetrospectiveSteam.Views
+namespace RetrospectivaAnual.Views
 {
     public partial class RetrospectiveView : UserControl
     {
@@ -31,7 +31,6 @@ namespace RetrospectiveSteam.Views
                 }
             }
         }
-<<<<<<< HEAD
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -48,15 +47,12 @@ namespace RetrospectiveSteam.Views
                 }
             }
         }
-=======
->>>>>>> origin/main
     }
 
     public class MultiplyConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-<<<<<<< HEAD
             if (values == null || values.Length < 2) return 0.0;
             
             double val = SafeParseDouble(values[0]);
@@ -89,30 +85,6 @@ namespace RetrospectiveSteam.Views
         }
     }
 
-=======
-            if (values.Length >= 2)
-            {
-                double val = 0;
-                double factor = 0;
-                
-                if (values[0] is double) val = (double)values[0];
-                else if (values[0] is IConvertible) val = ConvertUtility.ToDouble((IConvertible)values[0]);
-
-                if (values[1] is double) factor = (double)values[1];
-                else if (values[1] is IConvertible) factor = ConvertUtility.ToDouble((IConvertible)values[1]);
-
-                return val * factor;
-            }
-            return 0.0;
-        }
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture) { return null; }
-    }
-
-    internal static class ConvertUtility
-    {
-        public static double ToDouble(IConvertible c) { return c.ToDouble(null); }
-    }
->>>>>>> origin/main
 
     public class MoodIconConverter : IValueConverter
     {
@@ -146,13 +118,9 @@ namespace RetrospectiveSteam.Views
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-<<<<<<< HEAD
             bool val = false;
             if (value is bool) val = (bool)value;
             
-=======
-            bool val = (bool)value;
->>>>>>> origin/main
             if (parameter != null && parameter.ToString() == "Inverse") val = !val;
             return val ? Visibility.Visible : Visibility.Collapsed;
         }

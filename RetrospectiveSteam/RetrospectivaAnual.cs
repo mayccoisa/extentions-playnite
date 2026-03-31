@@ -6,26 +6,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RetrospectiveSteam.Services;
-using RetrospectiveSteam.ViewModels;
-using RetrospectiveSteam.Views;
+using RetrospectivaAnual.Services;
+using RetrospectivaAnual.ViewModels;
+using RetrospectivaAnual.Views;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace RetrospectiveSteam
+namespace RetrospectivaAnual
 {
-    public class RetrospectiveSteamPlugin : GenericPlugin
+    public class RetrospectivaAnualPlugin : GenericPlugin
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        private RetrospectiveSteamSettingsViewModel settings { get; set; }
+        private RetrospectivaAnualSettingsViewModel settings { get; set; }
         private PlayniteDataService dataService;
         private GameActivityService activityService;
         public override Guid Id { get { return Guid.Parse("785d9324-4173-420d-b17a-e2ace45bb317"); } }
 
-        public RetrospectiveSteamPlugin(IPlayniteAPI api) : base(api)
+        public RetrospectivaAnualPlugin(IPlayniteAPI api) : base(api)
         {
-            settings = new RetrospectiveSteamSettingsViewModel(this);
+            settings = new RetrospectivaAnualSettingsViewModel(this);
             dataService = new PlayniteDataService(api);
             activityService = new GameActivityService(api);
             Properties = new GenericPluginProperties
@@ -40,11 +40,7 @@ namespace RetrospectiveSteam
             {
                 new MainMenuItem
                 {
-<<<<<<< HEAD
-                    Description = "Abrir Retrospectiva anual",
-=======
-                    Description = "Show Retrospective Steam",
->>>>>>> origin/main
+                    Description = "Show Retrospectiva anual",
                     MenuSection = "@Retrospective",
                     Action = (mainMenuItem) =>
                     {
@@ -60,11 +56,7 @@ namespace RetrospectiveSteam
             {
                 new SidebarItem
                 {
-<<<<<<< HEAD
                     Title = "Retrospectiva anual",
-=======
-                    Title = "Retrospective Steam",
->>>>>>> origin/main
                     Type = SiderbarItemType.View,
                     Icon = new TextBlock
                     {
@@ -93,11 +85,7 @@ namespace RetrospectiveSteam
                 ShowMinimizeButton = true
             });
 
-<<<<<<< HEAD
-            window.Title = "Retrospectiva anual";
-=======
-            window.Title = "Retrospective Steam 2025";
->>>>>>> origin/main
+            window.Title = "Retrospectiva anual 2025";
             window.Content = view;
             window.Width = 1200;
             window.Height = 800;
@@ -151,7 +139,7 @@ namespace RetrospectiveSteam
 
         public override UserControl GetSettingsView(bool firstRunSettings)
         {
-            return new RetrospectiveSteamSettingsView();
+            return new RetrospectivaAnualSettingsView();
         }
     }
 }

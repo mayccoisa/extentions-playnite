@@ -1,12 +1,8 @@
 Id: 785d9324-4173-420d-b17a-e2ace45bb317
-<<<<<<< HEAD
 Name: Retrospectiva anual
-=======
-Name: Retrospective Steam 2025
->>>>>>> origin/main
 Author: WEON-ADMIN
 Description: "Plugin de Retrospectiva Anual no estilo Steam Replay. Analise suas estatísticas em gráficos por biblioteca e gênero, veja seus jogos favoritos e explore sua jornada ao longo do ano em uma surpreendente timeline em Zigzag."
-Version: 0.2
-Module: RetrospectiveSteam.dll
+Version: 0.5
+Module: RetrospectivaAnual.dll
 Type: GenericPlugin
 Icon: icon.png

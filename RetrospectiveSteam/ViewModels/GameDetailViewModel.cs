@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RetrospectiveSteam.Services;
+using RetrospectivaAnual.Services;
 
-namespace RetrospectiveSteam.ViewModels
+namespace RetrospectivaAnual.ViewModels
 {
     public class GameDetailViewModel
     {
@@ -18,11 +18,8 @@ namespace RetrospectiveSteam.ViewModels
         public string Genres { get { return Game.Genres != null ? string.Join(" • ", Game.Genres) : ""; } }
         
         public string TotalPlaytimeFormatted { get { return FormatPlaytime(Game.TotalPlaytimeSeconds); } }
-<<<<<<< HEAD
         public long TotalPlaytimeSeconds { get { return Game.TotalPlaytimeSeconds; } }
         public Guid GameId { get { return Game.GameId; } }
-=======
->>>>>>> origin/main
         public string UnlockedAchievementsText { get { return string.Format("{0} / {1}", Game.UnlockedAchievements, Game.TotalAchievements); } }
         public double AchievementProgress { get { return Game.TotalAchievements > 0 ? (double)Game.UnlockedAchievements / Game.TotalAchievements * 100 : 0; } }
 

@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using RetrospectiveSteam.Services;
+using RetrospectivaAnual.Services;
 using System.Globalization;
 
-namespace RetrospectiveSteam.Services
+namespace RetrospectivaAnual.Services
 {
 
     public class MoodInfo
@@ -501,7 +501,7 @@ namespace RetrospectiveSteam.Services
                 long yearPlaytime = 0;
                 List<ActivitySession> sessions;
                 if (allSessions.TryGetValue(g.GameId, out sessions) && sessions.Any())
-                    yearPlaytime = sessions.Sum(s => s.Seconds);
+                    yearPlaytime = sessions.Sum(s => (long)s.Seconds);
 
                 if (yearPlaytime <= 0) continue;
 
@@ -510,8 +510,9 @@ namespace RetrospectiveSteam.Services
                 {
                     // If multiple platforms, split the playtime equally (simple approach)
                     long splitPlaytime = yearPlaytime / platforms.Count;
-                    if (!map.ContainsKey(platform)) map[platform] = 0;
-                    map[platform] += splitPlaytime;
+                    string groupedName = GroupPlatformName(platform);
+                    if (!map.ContainsKey(groupedName)) map[groupedName] = 0;
+                    map[groupedName] += splitPlaytime;
                 }
             }
 
@@ -523,11 +524,22 @@ namespace RetrospectiveSteam.Services
                 .Take(topN)
                 .Select(kv => new PlatformData
                 {
-                    Name            = kv.Key,
+                    Name            = kv.Key.ToUpper(),
                     PlaytimeSeconds = kv.Value,
                     Ratio           = (double)kv.Value / total
                 })
                 .ToList();
+        }
+
+        private string GroupPlatformName(string platform)
+        {
+            if (string.IsNullOrEmpty(platform)) return "PC";
+            string p = platform.ToUpper();
+            if (p.Contains("NINTENDO")) return "NINTENDO";
+            if (p.Contains("XBOX")) return "XBOX";
+            if (p.Contains("PLAYSTATION") || p.Contains("SONY") || p.Contains("PS1") || p.Contains("PS2") || p.Contains("PS3") || p.Contains("PS4") || p.Contains("PS5") || p.Contains("PSP")) return "PLAYSTATION";
+            if (p.Contains("PC") || p.Contains("WINDOWS") || p.Contains("STEAM") || p.Contains("EPIC") || p.Contains("GOG")) return "PC";
+            return platform;
         }
 
         /// <summary>Aggregate daily activity in seconds. Key = date, Value = seconds played.</summary>

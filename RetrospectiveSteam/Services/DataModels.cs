@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using RetrospectiveSteam.Services;
+using RetrospectivaAnual.Services;
 
-namespace RetrospectiveSteam.Services
+namespace RetrospectivaAnual.Services
 {
     public class YearlyStatsData
     {

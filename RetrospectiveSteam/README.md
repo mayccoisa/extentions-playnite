@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# Retrospectiva anual
-=======
 # Retrospective Steam 2025
->>>>>>> origin/main
 
 Esta extensão para o Playnite gera uma experiência completa de retrospectiva anual aos moldes do aclamado "Steam Replay", trazendo estatísticas, hábitos, jogos favoritos e uma linda linha do tempo das suas aventuras gamísticas.
 

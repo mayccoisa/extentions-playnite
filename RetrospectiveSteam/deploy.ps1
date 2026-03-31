@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-# Build and Deploy script for Retrospectiva anual
-=======
 # Build and Deploy script for Retrospective Steam 2025
->>>>>>> origin/main
 # 
 # This script builds the extension and copies it to the Playnite extensions folder.
 
 $playniteExtensions = "C:\Users\mayco\Downloads\Playnite\Extensions\785d9324-4173-420d-b17a-e2ace45bb317"
 $msbuildPath = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe"
-$projectPath = ".\RetrospectiveSteam.csproj"
+$projectPath = ".\RetrospectivaAnual.csproj"
 $outputPath = ".\bin\Debug"
 
 Write-Host "Building project at $projectPath..." -ForegroundColor Cyan
@@ -25,7 +21,7 @@ if (!(Test-Path $playniteExtensions)) {
 }
 
 # Copy binary
-Copy-Item "$outputPath\RetrospectiveSteam.dll" $playniteExtensions -Force
+Copy-Item "$outputPath\RetrospectivaAnual.dll" $playniteExtensions -Force
 
 # Copy assets
 Copy-Item ".\bau_header.png" $playniteExtensions -Force

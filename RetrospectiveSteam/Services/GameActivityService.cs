@@ -5,7 +5,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Playnite.SDK;
 
-namespace RetrospectiveSteam.Services
+namespace RetrospectivaAnual.Services
 {
     public class GameActivityService
     {
