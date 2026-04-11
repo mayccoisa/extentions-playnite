@@ -20,11 +20,12 @@ namespace BuscaDeJogosLocais
         private readonly Predicate<T> canExecute;
         public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
         {
-            this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            if (execute == null) throw new ArgumentNullException("execute");
+            this.execute = execute;
             this.canExecute = canExecute;
         }
-        public bool CanExecute(object parameter) => canExecute == null || canExecute((T)parameter);
-        public void Execute(object parameter) => execute((T)parameter);
+        public bool CanExecute(object parameter) { return canExecute == null || canExecute((T)parameter); }
+        public void Execute(object parameter) { execute((T)parameter); }
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
@@ -34,8 +35,8 @@ namespace BuscaDeJogosLocais
 
     public class InverseBooleanConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => !(bool)value;
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => !(bool)value;
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) { return !(bool)value; }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) { return !(bool)value; }
     }
 
     public class ObservableObject : INotifyPropertyChanged
@@ -43,7 +44,7 @@ namespace BuscaDeJogosLocais
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (PropertyChanged != null) PropertyChanged.Invoke(this, new PropertyChangedEventArgs(name));
         }
         public void SetValue<T>(ref T field, T value, [CallerMemberName] string name = null)
         {
@@ -66,7 +67,7 @@ namespace BuscaDeJogosLocais
     public class ScannedGame : ObservableObject
     {
         private bool selecionado;
-        public bool Selecionado { get => selecionado; set => SetValue(ref selecionado, value); }
+        public bool Selecionado { get { return selecionado; } set { SetValue(ref selecionado, value); } }
         
         public string Nome { get; set; }
         public string CaminhoExe { get; set; }
@@ -74,21 +75,57 @@ namespace BuscaDeJogosLocais
         public string PastaMonitoradaPai { get; set; } // Adicionado para filtro/agrupamento
         
         private bool jaExiste;
-        public bool JaExiste { get => jaExiste; set { SetValue(ref jaExiste, value); OnPropertyChanged(nameof(Status)); } }
+        public bool JaExiste { get { return jaExiste; } set { SetValue(ref jaExiste, value); OnPropertyChanged("Status"); } }
         
-        public string Status => JaExiste ? "Já na Biblioteca" : "Pendente";
+        public string Status { get { return JaExiste ? "Já na Biblioteca" : "Pendente"; } }
+    }
+
+    public class IntegrityResult : ObservableObject
+    {
+        public Guid GameId { get; set; }
+        public string Name { get; set; }
+        public string InstallDir { get; set; }
+        public bool FolderMissing { get; set; }
+        public bool ExeMissing { get; set; }
+        
+        private bool selected;
+        public bool Selected { get { return selected; } set { SetValue(ref selected, value); } }
+
+        public string StatusSummary {
+            get {
+                var s = new List<string>();
+                if (FolderMissing) s.Add("Pasta Ausente");
+                if (ExeMissing) s.Add("Executável Ausente");
+                return string.Join(" | ", s);
+            }
+        }
+    }
+
+    public class RelinkGameItem : ObservableObject
+    {
+        public Guid GameId { get; set; }
+        public string Nome { get; set; }
+        public string CaminhoAntigoExe { get; set; }
+        public string NovoCaminhoExe { get; set; }
+        public string NovoInstallDirectory { get; set; }
+        
+        private string status;
+        public string Status { get { return status; } set { SetValue(ref status, value); } }
+        
+        private bool selecionado;
+        public bool Selecionado { get { return selecionado; } set { SetValue(ref selecionado, value); } }
     }
 
     public class BuscaDeJogosLocaisSettings : ObservableObject
     {
         private ObservableCollection<string> pastas = new ObservableCollection<string>();
-        public ObservableCollection<string> Pastas { get => pastas; set => SetValue(ref pastas, value); }
+        public ObservableCollection<string> Pastas { get { return pastas; } set { SetValue(ref pastas, value); } }
         
         private ObservableCollection<ImportLogEntry> historicoImportacoes = new ObservableCollection<ImportLogEntry>();
-        public ObservableCollection<ImportLogEntry> HistoricoImportacoes { get => historicoImportacoes; set => SetValue(ref historicoImportacoes, value); }
+        public ObservableCollection<ImportLogEntry> HistoricoImportacoes { get { return historicoImportacoes; } set { SetValue(ref historicoImportacoes, value); } }
 
         private bool tagDriveAsFeature = false;
-        public bool TagDriveAsFeature { get => tagDriveAsFeature; set => SetValue(ref tagDriveAsFeature, value); }
+        public bool TagDriveAsFeature { get { return tagDriveAsFeature; } set { SetValue(ref tagDriveAsFeature, value); } }
     }
 
     public class BuscaDeJogosLocaisSettingsViewModel : ObservableObject, ISettings
@@ -96,20 +133,23 @@ namespace BuscaDeJogosLocais
         private readonly BuscaDeJogosLocais plugin;
         private BuscaDeJogosLocaisSettings editingClone { get; set; }
         private BuscaDeJogosLocaisSettings settings;
-        public BuscaDeJogosLocaisSettings Settings { get => settings; set => SetValue(ref settings, value); }
+        public BuscaDeJogosLocaisSettings Settings { get { return settings; } set { SetValue(ref settings, value); } }
 
         // Listas e Views para Filtros
-        public ObservableCollection<ScannedGame> JogosEncontrados { get; } = new ObservableCollection<ScannedGame>();
-        public ICollectionView JogosEncontradosView { get; }
+        public ObservableCollection<ScannedGame> JogosEncontrados { get; private set; }
+        public ICollectionView JogosEncontradosView { get; private set; }
 
-        public ICollectionView HistoricoView { get; }
+        public ICollectionView HistoricoView { get; private set; }
+
+        public ObservableCollection<RelinkGameItem> JogosParaRelinkar { get; private set; }
+        public ICollectionView JogosParaRelinkarView { get; private set; }
         
         // Filtros Ativos
         private bool filtrarApenasNovos = false;
-        public bool FiltrarApenasNovos { get => filtrarApenasNovos; set { SetValue(ref filtrarApenasNovos, value); JogosEncontradosView.Refresh(); } }
+        public bool FiltrarApenasNovos { get { return filtrarApenasNovos; } set { SetValue(ref filtrarApenasNovos, value); JogosEncontradosView.Refresh(); } }
 
         private string filtroPastaSelecionada = "Todas as Pastas";
-        public string FiltroPastaSelecionada { get => filtroPastaSelecionada; set { SetValue(ref filtroPastaSelecionada, value); JogosEncontradosView.Refresh(); HistoricoView.Refresh(); } }
+        public string FiltroPastaSelecionada { get { return filtroPastaSelecionada; } set { SetValue(ref filtroPastaSelecionada, value); JogosEncontradosView.Refresh(); HistoricoView.Refresh(); } }
 
         public List<string> OpcoesPastas
         {
@@ -122,16 +162,21 @@ namespace BuscaDeJogosLocais
         }
 
         private string pastasEstatisticas = "Escaneie para ver as estatísticas...";
-        public string PastasEstatisticas { get => pastasEstatisticas; set => SetValue(ref pastasEstatisticas, value); }
+        public string PastasEstatisticas { get { return pastasEstatisticas; } set { SetValue(ref pastasEstatisticas, value); } }
         
-        public RelayCommand<object> AddFolderCommand { get; }
-        public RelayCommand<object> ScanNowCommand { get; }
-        public RelayCommand<object> ImportSelectedCommand { get; }
-        public RelayCommand<object> ClearHistoryCommand { get; }
-        public RelayCommand<object> UpdateExistingGamesDriveCommand { get; }
+        public RelayCommand<object> AddFolderCommand { get; private set; }
+        public RelayCommand<object> ScanNowCommand { get; private set; }
+        public RelayCommand<object> ImportSelectedCommand { get; private set; }
+        public RelayCommand<object> ClearHistoryCommand { get; private set; }
+        public RelayCommand<object> UpdateExistingGamesDriveCommand { get; private set; }
+        
+        public RelayCommand<object> SearchLostGamesCommand { get; private set; }
+        public RelayCommand<object> RelinkSelectedCommand { get; private set; }
 
         public BuscaDeJogosLocaisSettingsViewModel(BuscaDeJogosLocais plugin)
         {
+            JogosEncontrados = new ObservableCollection<ScannedGame>();
+            JogosParaRelinkar = new ObservableCollection<RelinkGameItem>();
             this.plugin = plugin;
             var savedSettings = plugin.LoadPluginSettings<BuscaDeJogosLocaisSettings>();
             if (savedSettings != null)
@@ -148,11 +193,13 @@ namespace BuscaDeJogosLocais
             // Inicializar Views de Coleção
             JogosEncontradosView = CollectionViewSource.GetDefaultView(JogosEncontrados);
             JogosEncontradosView.Filter = FilterJogosDescobertos;
-            JogosEncontradosView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(ScannedGame.PastaMonitoradaPai)));
+            JogosEncontradosView.GroupDescriptions.Add(new PropertyGroupDescription("PastaMonitoradaPai"));
 
             HistoricoView = CollectionViewSource.GetDefaultView(Settings.HistoricoImportacoes);
             HistoricoView.Filter = FilterHistorico;
-            HistoricoView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(ImportLogEntry.PastaMonitoradaPai)));
+            HistoricoView.GroupDescriptions.Add(new PropertyGroupDescription("PastaMonitoradaPai"));
+
+            JogosParaRelinkarView = CollectionViewSource.GetDefaultView(JogosParaRelinkar);
 
             AddFolderCommand = new RelayCommand<object>((_) =>
             {
@@ -162,7 +209,7 @@ namespace BuscaDeJogosLocais
                     if (!Settings.Pastas.Contains(path))
                     {
                         Settings.Pastas.Add(path);
-                        OnPropertyChanged(nameof(OpcoesPastas));
+                        OnPropertyChanged("OpcoesPastas");
                         RecalcularEstatisticas();
                     }
                 }
@@ -197,7 +244,7 @@ namespace BuscaDeJogosLocais
 
                 if (importados > 0)
                 {
-                    plugin.PlayniteApi.Dialogs.ShowMessage($"{importados} jogos importados com sucesso!", "Sucesso");
+                    plugin.PlayniteApi.Dialogs.ShowMessage(string.Format("{0} jogos importados com sucesso!", importados), "Sucesso");
                     JogosEncontradosView.Refresh();
                     RecalcularEstatisticas();
                 }
@@ -222,7 +269,163 @@ namespace BuscaDeJogosLocais
                     }
                 }
                 
-                plugin.PlayniteApi.Dialogs.ShowMessage($"{atualizados} jogos atualizados com a característica do HD.", "Sucesso");
+                plugin.PlayniteApi.Dialogs.ShowMessage(string.Format("{0} jogos atualizados com a característica do HD.", atualizados), "Sucesso");
+            });
+
+            SearchLostGamesCommand = new RelayCommand<object>((_) =>
+            {
+                JogosParaRelinkar.Clear();
+
+                plugin.PlayniteApi.Dialogs.ActivateGlobalProgress((progressArgs) =>
+                {
+                    var games = plugin.PlayniteApi.Database.Games.ToList();
+                    
+                    foreach (var game in games)
+                    {
+                        if (progressArgs.CancelToken.IsCancellationRequested) break;
+
+                        if (game.IsInstalled) continue;
+                        if (game.PluginId != Guid.Empty && game.PluginId != plugin.Id) continue;
+                        if (game.GameActions == null || game.GameActions.Count == 0) continue;
+                        if (game.GameActions.Any(a => a.Type == Playnite.SDK.Models.GameActionType.Emulator)) continue;
+
+                        var fileAction = game.GameActions.FirstOrDefault(a => a.Type == Playnite.SDK.Models.GameActionType.File);
+                        if (fileAction == null || string.IsNullOrEmpty(fileAction.Path)) continue;
+
+                        string exeName = Path.GetFileName(fileAction.Path);
+                        if (string.IsNullOrEmpty(exeName)) continue;
+
+                        var relinkItem = new RelinkGameItem
+                        {
+                            GameId = game.Id,
+                            Nome = game.Name,
+                            CaminhoAntigoExe = fileAction.Path,
+                            Status = "Buscando...",
+                            Selecionado = false
+                        };
+
+                        plugin.PlayniteApi.MainView.UIDispatcher.Invoke(() => { JogosParaRelinkar.Add(relinkItem); });
+
+                        string foundExePath = null;
+                        string foundInstallDir = null;
+                        
+                        if (Settings.Pastas != null)
+                        {
+                            foreach (var pasta in Settings.Pastas)
+                            {
+                                if (!Directory.Exists(pasta)) continue;
+
+                                try
+                                {
+                                    var stack = new Stack<string>();
+                                    stack.Push(pasta);
+
+                                    while (stack.Count > 0 && foundExePath == null)
+                                    {
+                                        if (progressArgs.CancelToken.IsCancellationRequested) break;
+
+                                        string currentDir = stack.Pop();
+                                        
+                                        try
+                                        {
+                                            var files = Directory.EnumerateFiles(currentDir, exeName);
+                                            var match = files.FirstOrDefault(f => Path.GetFileName(f).Equals(exeName, StringComparison.OrdinalIgnoreCase));
+                                            
+                                            if (match != null)
+                                            {
+                                                foundExePath = match;
+                                                foundInstallDir = currentDir;
+                                                
+                                                string parentName = new DirectoryInfo(currentDir).Name;
+                                                if (!parentName.Equals(game.Name, StringComparison.OrdinalIgnoreCase))
+                                                {
+                                                    string oldParentName = !string.IsNullOrEmpty(game.InstallDirectory) ? new DirectoryInfo(game.InstallDirectory).Name : "";
+                                                    if (!string.IsNullOrEmpty(oldParentName) && !parentName.Equals(oldParentName, StringComparison.OrdinalIgnoreCase))
+                                                    {
+                                                        // Se o nome da pasta não bater nem com o nome do jogo nem com o anterior, ignora e continua procurando.
+                                                        foundExePath = null;
+                                                        foundInstallDir = null;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (UnauthorizedAccessException) { }
+                                        catch (Exception) { }
+
+                                        if (foundExePath == null)
+                                        {
+                                            try
+                                            {
+                                                var subDirs = Directory.EnumerateDirectories(currentDir);
+                                                foreach (var d in subDirs) stack.Push(d);
+                                            }
+                                            catch (Exception) { }
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+                                
+                                if (foundExePath != null) break;
+                            }
+                        }
+
+                        plugin.PlayniteApi.MainView.UIDispatcher.Invoke(() =>
+                        {
+                            if (foundExePath != null)
+                            {
+                                relinkItem.NovoCaminhoExe = foundExePath;
+                                relinkItem.NovoInstallDirectory = foundInstallDir;
+                                relinkItem.Status = "Pronto para Relink";
+                                relinkItem.Selecionado = true;
+                            }
+                            else
+                            {
+                                relinkItem.Status = "Não Encontrado";
+                            }
+                        });
+                    }
+                }, new Playnite.SDK.GlobalProgressOptions("Buscando novos endereços para jogos perdidos...", true));
+            });
+
+            RelinkSelectedCommand = new RelayCommand<object>((_) =>
+            {
+                var selecionados = JogosParaRelinkar.Where(j => j.Selecionado && !string.IsNullOrEmpty(j.NovoCaminhoExe)).ToList();
+                if (selecionados.Count == 0)
+                {
+                    plugin.PlayniteApi.Dialogs.ShowMessage("Nenhum jogo selecionado e pronto para relink.", "Aviso");
+                    return;
+                }
+
+                int atualizados = 0;
+                foreach (var relink in selecionados)
+                {
+                    var game = plugin.PlayniteApi.Database.Games.Get(relink.GameId);
+                    if (game == null) continue;
+
+                    game.InstallDirectory = relink.NovoInstallDirectory;
+                    game.IsInstalled = true;
+                    
+                    if (game.GameActions != null)
+                    {
+                        var fileAction = game.GameActions.FirstOrDefault(a => a.Type == Playnite.SDK.Models.GameActionType.File);
+                        if (fileAction != null)
+                        {
+                            fileAction.Path = relink.NovoCaminhoExe;
+                            fileAction.WorkingDir = "{InstallDir}";
+                        }
+                    }
+
+                    plugin.PlayniteApi.Database.Games.Update(game);
+                    
+                    relink.Selecionado = false;
+                    relink.Status = "Relinkado";
+                    atualizados++;
+                }
+
+                if (atualizados > 0)
+                {
+                    plugin.PlayniteApi.Dialogs.ShowMessage(string.Format("{0} jogos foram relinkados com sucesso!", atualizados), "Sucesso");
+                }
             });
         }
 
@@ -243,7 +446,7 @@ namespace BuscaDeJogosLocais
         {
             if (FiltroPastaSelecionada == "Todas as Pastas") return true;
             var entry = (ImportLogEntry)item;
-            return entry.PastaMonitoradaPai?.Equals(FiltroPastaSelecionada, StringComparison.OrdinalIgnoreCase) ?? true;
+            return entry.PastaMonitoradaPai != null ? entry.PastaMonitoradaPai.Equals(FiltroPastaSelecionada, StringComparison.OrdinalIgnoreCase) : true;
         }
 
         public void RecalcularEstatisticas()
@@ -267,15 +470,15 @@ namespace BuscaDeJogosLocais
                             g.InstallDirectory != null && 
                             plugin.NormalizePath(g.InstallDirectory).Equals(plugin.NormalizePath(d), StringComparison.OrdinalIgnoreCase)
                         ));
-                        builder.AppendLine($"- {pasta}: {totalPastas} pastas ({pastasVinculadas} vinculadas).");
-                    } catch (Exception) { builder.AppendLine($"- {pasta}: Erro de leitura."); }
+                        builder.AppendLine(string.Format("- {0}: {1} pastas ({2} vinculadas).", pasta, totalPastas, pastasVinculadas));
+                    } catch (Exception) { builder.AppendLine(string.Format("- {0}: Erro de leitura.", pasta)); }
                 }
-                else builder.AppendLine($"- {pasta}: (Inacessível)");
+                else builder.AppendLine(string.Format("- {0}: (Inacessível)", pasta));
             }
             PastasEstatisticas = builder.ToString();
         }
 
-        public void BeginEdit() { editingClone = Serialization.GetClone(Settings); RecalcularEstatisticas(); OnPropertyChanged(nameof(OpcoesPastas)); }
+        public void BeginEdit() { editingClone = Serialization.GetClone(Settings); RecalcularEstatisticas(); OnPropertyChanged("OpcoesPastas"); }
         public void CancelEdit() { Settings = editingClone; }
         public void EndEdit() { plugin.SavePluginSettings(Settings); plugin.UpdateWatchers(); }
         public bool VerifySettings(out List<string> errors) { errors = new List<string>(); return true; }

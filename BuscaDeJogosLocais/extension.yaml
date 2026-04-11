@@ -3,5 +3,5 @@ Name: Busca de Jogos Locais
 Author: PC de Sofa
 Version: 1.0.0
 Module: BuscaDeJogosLocais.dll
-Type: LibraryPlugin
+Type: GameLibrary
 Icon: icon.png

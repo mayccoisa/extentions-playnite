@@ -1,0 +1,10 @@
+Id: b2f9374-4173-420d-b17a-e2ace45bb318
+Name: Folder Cleaner
+Author: Antigravity
+Version: 1.0.0
+Module: FolderCleaner.dll
+Type: GenericPlugin
+Icon: icon.png
+Links:
+  - Name: GitHub
+    Url: https://github.com/mayccoisa/extentions-playnite

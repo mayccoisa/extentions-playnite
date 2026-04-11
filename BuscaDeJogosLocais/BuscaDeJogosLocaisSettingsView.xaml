@@ -210,6 +210,84 @@
                     <Button Grid.Row="2" Content="Limpar Histórico" Command="{Binding ClearHistoryCommand}" Margin="0,10,0,0" HorizontalAlignment="Right" />
                 </Grid>
             </TabItem>
+            <!-- ABA 4: REPARAR DESINSTALADOS -->
+            <TabItem Header="Reparar Desinstalados">
+                <Grid Margin="10,20,10,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="#11FFFFFF" Padding="10" CornerRadius="5" Margin="0,0,0,10">
+                        <TextBlock Text="Localize jogos que mudaram de pasta e foram marcados como desinstalados. O plugin tentará encontrar o novo local usando as Pastas Monitoradas." TextWrapping="Wrap" Opacity="0.8" />
+                    </Border>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="🔍 PROCURAR CAMINHOS" Command="{Binding SearchLostGamesCommand}" Padding="15,8" FontWeight="Bold" />
+                        <TextBlock Text="Verifica jogos não instalados e procura seus executáveis." VerticalAlignment="Center" Margin="15,0,0,0" Opacity="0.7" />
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="2" ItemsSource="{Binding JogosParaRelinkarView}" 
+                              AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single" 
+                              Background="#11FFFFFF" BorderThickness="1"
+                              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                              CanUserResizeColumns="True" CanUserReorderColumns="True">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Sel." Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{DynamicResource TextBrush}" BorderThickness="1" CornerRadius="2" 
+                                                Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.6">
+                                            <CheckBox IsChecked="{Binding Selecionado, UpdateSourceTrigger=PropertyChanged}" 
+                                                      HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-1" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Nome do Jogo" Width="2*" MinWidth="150" SortMemberPath="Nome">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Nome}" VerticalAlignment="Center" Margin="5,4" 
+                                                   Foreground="{DynamicResource TextBrush}" FontWeight="Bold" FontSize="13" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Status" Width="130" SortMemberPath="Status">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Status}" VerticalAlignment="Center" Margin="5,4"
+                                                   Foreground="{DynamicResource TextBrush}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Caminho Antigo" Width="2*" MinWidth="200" SortMemberPath="CaminhoAntigoExe">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding CaminhoAntigoExe}" VerticalAlignment="Center" Margin="5,2"
+                                                   Foreground="{DynamicResource TextBrush}" Opacity="0.6" ToolTip="{Binding CaminhoAntigoExe}" TextTrimming="CharacterEllipsis" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <DataGridTemplateColumn Header="Novo Caminho Encontrado" Width="3*" MinWidth="250" SortMemberPath="NovoCaminhoExe">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding NovoCaminhoExe}" VerticalAlignment="Center" Margin="5,2"
+                                                   Foreground="LightGreen" Opacity="0.9" ToolTip="{Binding NovoCaminhoExe}" TextTrimming="CharacterEllipsis" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Button Grid.Row="3" Content="🔧 RELINKAR SELECIONADOS" Command="{Binding RelinkSelectedCommand}" Margin="0,10,0,0" Padding="20,10" FontWeight="Bold" Background="#22FF8800" HorizontalAlignment="Right" />
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

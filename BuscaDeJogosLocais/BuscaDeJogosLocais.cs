@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Diagnostics;
 
@@ -16,9 +17,9 @@ namespace BuscaDeJogosLocais
     {
         private static readonly ILogger logger = LogManager.GetLogger();
         private List<FileSystemWatcher> _vigias = new List<FileSystemWatcher>();
-        public override Guid Id { get; } = Guid.Parse("186d9374-4173-420d-b17a-e2ace45bb317");
-        public override string Name => "Busca de Jogos Locais";
-        public override LibraryClient Client => null;
+        public override Guid Id { get { return Guid.Parse("186d9374-4173-420d-b17a-e2ace45bb317"); } }
+        public override string Name { get { return "Busca de Jogos Locais"; } }
+        public override LibraryClient Client { get { return null; } }
 
         private BuscaDeJogosLocaisSettingsViewModel settings;
 
@@ -46,7 +47,7 @@ namespace BuscaDeJogosLocais
                     {
                         var watcher = new FileSystemWatcher(pasta) { IncludeSubdirectories = true, EnableRaisingEvents = true };
                         watcher.Created += (s, e) => {
-                            logger.Info($"Novo arquivo detectado: {e.FullPath}");
+                            logger.Info(string.Format("Novo arquivo detectado: {0}", e.FullPath));
                         };
                         _vigias.Add(watcher);
                     }
@@ -98,7 +99,7 @@ namespace BuscaDeJogosLocais
                                 }
                             }
                         }
-                        catch (Exception ex) { logger.Error(ex, $"Erro crítico ao escanear {pasta}"); }
+                        catch (Exception ex) { logger.Error(ex, string.Format("Erro crítico ao escanear {0}", pasta)); }
                     }
                 }
                 
@@ -140,7 +141,7 @@ namespace BuscaDeJogosLocais
                 }
                 catch (Exception ex)
                 {
-                    logger.Debug($"Erro ao enumerar arquivos em {currentDir}: {ex.Message}");
+                    logger.Debug(string.Format("Erro ao enumerar arquivos em {0}: {1}", currentDir, ex.Message));
                     continue;
                 }
 
@@ -161,7 +162,7 @@ namespace BuscaDeJogosLocais
                 }
                 catch (Exception ex)
                 {
-                    logger.Debug($"Erro ao enumerar diretórios em {currentDir}: {ex.Message}");
+                    logger.Debug(string.Format("Erro ao enumerar diretórios em {0}: {1}", currentDir, ex.Message));
                     continue;
                 }
 
@@ -233,9 +234,9 @@ namespace BuscaDeJogosLocais
             return true;
         }
 
-        public override ISettings GetSettings(bool firstRun) => settings;
-        public override UserControl GetSettingsView(bool firstRun) => new BuscaDeJogosLocaisSettingsView();
-        public override IEnumerable<GameMetadata> GetGames(LibraryGetGamesArgs args) => new List<GameMetadata>();
+        public override ISettings GetSettings(bool firstRun) { return settings; }
+        public override UserControl GetSettingsView(bool firstRun) { return new BuscaDeJogosLocaisSettingsView(); }
+        public override IEnumerable<GameMetadata> GetGames(LibraryGetGamesArgs args) { return new List<GameMetadata>(); }
 
         public override IEnumerable<PlayController> GetPlayActions(GetPlayActionsArgs args)
         {
@@ -267,7 +268,7 @@ namespace BuscaDeJogosLocais
                 string drive = Path.GetPathRoot(game.InstallDirectory);
                 if (!string.IsNullOrEmpty(drive))
                 {
-                    string featureName = $"HD {drive.TrimEnd('\\')}";
+                    string featureName = string.Format("HD {0}", drive.TrimEnd('\\'));
                     var feature = PlayniteApi.Database.Features.Add(featureName);
                     if (game.FeatureIds == null) game.FeatureIds = new List<Guid>();
                     if (!game.FeatureIds.Contains(feature.Id))
@@ -278,6 +279,109 @@ namespace BuscaDeJogosLocais
                 }
             } catch (Exception) { }
             return false;
+        }
+
+        public override IEnumerable<MainMenuItem> GetMainMenuItems(GetMainMenuItemsArgs args)
+        {
+            yield return new MainMenuItem
+            {
+                Description = "Verificar Integridade da Biblioteca",
+                MenuSection = "@Busca de Jogos Locais",
+                Action = (mainMenuItemArgs) =>
+                {
+                    CheckLibraryIntegrity();
+                }
+            };
+        }
+
+        public void CheckLibraryIntegrity()
+        {
+            var results = new ObservableCollection<IntegrityResult>();
+            PlayniteApi.Dialogs.ActivateGlobalProgress((progressArgs) =>
+            {
+                var games = PlayniteApi.Database.Games.ToList();
+                foreach (var game in games)
+                {
+                    if (progressArgs.CancelToken.IsCancellationRequested) break;
+
+                    bool folderMissing = false;
+                    bool exeMissing = false;
+
+                    if (!string.IsNullOrEmpty(game.InstallDirectory))
+                    {
+                        if (!Directory.Exists(game.InstallDirectory))
+                        {
+                            folderMissing = true;
+                        }
+                    }
+
+                    if (game.GameActions != null && game.GameActions.Any(a => a.Type == GameActionType.File))
+                    {
+                        var primaryAction = game.GameActions.FirstOrDefault(a => a.Type == GameActionType.File);
+                        if (primaryAction != null)
+                        {
+                            string fullPath = PlayniteApi.ExpandGameVariables(game, primaryAction.Path);
+                            if (!File.Exists(fullPath))
+                            {
+                                exeMissing = true;
+                            }
+                        }
+                    }
+
+                    if (folderMissing || exeMissing)
+                    {
+                        PlayniteApi.MainView.UIDispatcher.Invoke(() =>
+                        {
+                            results.Add(new IntegrityResult
+                            {
+                                GameId = game.Id,
+                                Name = game.Name,
+                                InstallDir = game.InstallDirectory,
+                                FolderMissing = folderMissing,
+                                ExeMissing = exeMissing,
+                                Selected = true
+                            });
+                        });
+                    }
+                }
+            }, new GlobalProgressOptions("Verificando integridade da biblioteca...", true));
+
+            if (results.Count == 0)
+            {
+                PlayniteApi.Dialogs.ShowMessage("Nenhum problema de integridade encontrado.", "Scanner de Integridade");
+                return;
+            }
+
+            var window = PlayniteApi.Dialogs.CreateWindow(new WindowCreationOptions
+            {
+                ShowMaximizeButton = false,
+                ShowMinimizeButton = false
+            });
+
+            window.Title = "Integridade da Biblioteca - Itens Ausentes";
+            window.Content = new IntegrityResultView(results, (selectedItems) =>
+            {
+                if (selectedItems.Count > 0)
+                {
+                    if (PlayniteApi.Dialogs.ShowMessage(string.Format("Tem certeza que deseja remover {0} jogos da biblioteca?", selectedItems.Count), "Confirmar Remoção", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        foreach (var item in selectedItems)
+                        {
+                            PlayniteApi.Database.Games.Remove(item.GameId);
+                        }
+                        PlayniteApi.Dialogs.ShowMessage(string.Format("{0} jogos removidos.", selectedItems.Count), "Sucesso");
+                        window.Close();
+                    }
+                }
+                else
+                {
+                    window.Close();
+                }
+            });
+
+            window.SizeToContent = SizeToContent.WidthAndHeight;
+            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            window.ShowDialog();
         }
     }
 }

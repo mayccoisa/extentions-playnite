@@ -1,0 +1,10 @@
+Id: d35d9324-4173-420d-b17a-e2ace45bb317
+Name: Hypervisor Overlay
+Author: SparrowBrain
+Version: 1.0.0
+Type: GenericPlugin
+Module: HypervisorOverlay.dll
+Icon: icon.png
+Links:
+  - Name: GitHub
+    Url: https://github.com/SpVGC/extentions-playnite

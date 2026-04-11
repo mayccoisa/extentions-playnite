@@ -1,4 +1,4 @@
-using Playnite.SDK;
+﻿using Playnite.SDK;
 using Playnite.SDK.Data;
 using System;
 using System.Collections.Generic;
@@ -6,22 +6,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RetrospectivaAnual
+namespace FolderCleaner
 {
-    public class RetrospectivaAnualSettings : ObservableObject
+    public class FolderCleanerSettings : ObservableObject
     {
-        // No settings required for this extension.
+        private string option1 = string.Empty;
+        private bool option2 = false;
+        private bool optionThatWontBeSaved = false;
+
+        public string Option1 { get => option1; set => SetValue(ref option1, value); }
+        public bool Option2 { get => option2; set => SetValue(ref option2, value); }
+        // Playnite serializes settings object to a JSON object and saves it as text file.
+        // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
+        [DontSerialize]
+        public bool OptionThatWontBeSaved { get => optionThatWontBeSaved; set => SetValue(ref optionThatWontBeSaved, value); }
     }
 
-    public class RetrospectivaAnualSettingsViewModel : ObservableObject, ISettings
+    public class FolderCleanerSettingsViewModel : ObservableObject, ISettings
     {
-        private readonly RetrospectivaAnualPlugin plugin;
-        private RetrospectivaAnualSettings editingClone { get; set; }
+        private readonly FolderCleaner plugin;
+        private FolderCleanerSettings editingClone { get; set; }
 
-        private RetrospectivaAnualSettings settings;
-        public RetrospectivaAnualSettings Settings
+        private FolderCleanerSettings settings;
+        public FolderCleanerSettings Settings
         {
-            get { return settings; }
+            get => settings;
             set
             {
                 settings = value;
@@ -29,13 +38,13 @@ namespace RetrospectivaAnual
             }
         }
 
-        public RetrospectivaAnualSettingsViewModel(RetrospectivaAnualPlugin plugin)
+        public FolderCleanerSettingsViewModel(FolderCleaner plugin)
         {
             // Injecting your plugin instance is required for Save/Load method because Playnite saves data to a location based on what plugin requested the operation.
             this.plugin = plugin;
 
             // Load saved settings.
-            var savedSettings = plugin.LoadPluginSettings<RetrospectivaAnualSettings>();
+            var savedSettings = plugin.LoadPluginSettings<FolderCleanerSettings>();
 
             // LoadPluginSettings returns null if no saved data is available.
             if (savedSettings != null)
@@ -44,7 +53,7 @@ namespace RetrospectivaAnual
             }
             else
             {
-                Settings = new RetrospectivaAnualSettings();
+                Settings = new FolderCleanerSettings();
             }
         }
 
