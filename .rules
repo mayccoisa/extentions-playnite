@@ -1,0 +1,7 @@
+# Deployment de Extensões Playnite
+
+When tracking or executing a request to "deploy", "release", "preparar uma nova versão", or distribute a Playnite Extension for the user, you MUST refer to the `playnite_extension_deployment` skill.
+
+Available Skills:
+- `playnite_extension_development` - Guidelines for coding, building, and fixing Playnite extension issues locally.
+- `playnite_extension_deployment` - Details the process of packaging `.pext` using GitHub Actions, tagging a release, and submitting to Playnite.

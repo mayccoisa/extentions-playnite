@@ -1,0 +1,58 @@
+name: Deploy Extension (.pext)
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger build on any tag that starts with 'v', e.g., 'v1.0.0'
+
+jobs:
+  build-and-pack:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.3.1
+
+      - name: Restore NuGet Packages
+        run: nuget restore -SolutionDirectory .
+
+      - name: Build BuscaDeJogosLocais Extension
+        run: msbuild BuscaDeJogosLocais/BuscaDeJogosLocais.csproj -p:Configuration=Release
+
+      - name: Build HypervisorOverlay Extension
+        run: msbuild HypervisorOverlay/HypervisorOverlay.csproj -p:Configuration=Release
+
+      - name: Build RetrospectiveSteam Extension
+        run: msbuild RetrospectiveSteam/RetrospectiveSteam.csproj -p:Configuration=Release
+
+      - name: Download Playnite Portable (Para extrair o Toolbox.exe)
+        run: |
+          # Baixando pacote do Playnite (Toolbox está embutido)
+          Invoke-WebRequest -Uri "https://github.com/JosefNemec/Playnite/releases/download/10.35/Playnite1035.zip" -OutFile "playnite.zip"
+          Expand-Archive "playnite.zip" -DestinationPath "playnite"
+
+      - name: Pack BuscaDeJogosLocais (.pext)
+        run: |
+          .\playnite\Toolbox.exe pack "BuscaDeJogosLocais\bin\Release" ".\"
+
+      - name: Pack HypervisorOverlay (.pext)
+        run: |
+          .\playnite\Toolbox.exe pack "HypervisorOverlay\bin\Release" ".\"
+
+      - name: Pack RetrospectiveSteam (.pext)
+        run: |
+          .\playnite\Toolbox.exe pack "RetrospectiveSteam\bin\Release" ".\"
+      
+      - name: List Generated Files (Diagnostic)
+        run: ls *.pext
+
+      - name: Publish Release & Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "*.pext"
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
