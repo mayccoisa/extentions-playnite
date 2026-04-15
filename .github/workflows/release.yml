@@ -8,6 +8,8 @@ on:
 jobs:
   build-and-pack:
     runs-on: windows-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout Code
