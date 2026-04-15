@@ -34,10 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Playnite.SDK">
-      <HintPath>C:\Users\mayco\Downloads\Playnite\Playnite.SDK.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <PackageReference Include="PlayniteSDK" Version="6.11.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
