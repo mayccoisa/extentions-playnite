@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuscaDeJogosLocais", "BuscaDeJogosLocais\BuscaDeJogosLocais.csproj", "{186D9374-4173-420D-B17A-E2ACE45BB317}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HypervisorOverlay", "HypervisorOverlay\HypervisorOverlay.csproj", "{D35D9324-4173-420D-B17A-E2ACE45BB317}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetrospectivaAnual", "RetrospectiveSteam\RetrospectivaAnual.csproj", "{4FDF1E89-5BC3-4C72-8FDA-0D580E7A5D5F}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{186D9374-4173-420D-B17A-E2ACE45BB317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{186D9374-4173-420D-B17A-E2ACE45BB317}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{186D9374-4173-420D-B17A-E2ACE45BB317}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{186D9374-4173-420D-B17A-E2ACE45BB317}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D35D9324-4173-420D-B17A-E2ACE45BB317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D35D9324-4173-420D-B17A-E2ACE45BB317}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D35D9324-4173-420D-B17A-E2ACE45BB317}.Release|Any CPU.ActiveCfg = Release|Any CPU

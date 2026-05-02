@@ -30,10 +30,6 @@ jobs:
           Invoke-WebRequest -Uri "https://github.com/JosefNemec/Playnite/releases/download/10.35/Playnite1035.zip" -OutFile "playnite.zip"
           Expand-Archive "playnite.zip" -DestinationPath "playnite"
 
-      - name: Pack BuscaDeJogosLocais (.pext)
-        run: |
-          .\playnite\Toolbox.exe pack "BuscaDeJogosLocais\bin\Release" ".\"
-
       - name: Pack HypervisorOverlay (.pext)
         run: |
           .\playnite\Toolbox.exe pack "HypervisorOverlay\bin\Release" ".\"
